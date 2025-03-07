@@ -216,13 +216,13 @@ export const useGameStore = defineStore('game', () => {
       }
 
       // Add the comment to the game
-      const gameIndex = games.value.findIndex((g) => g.id === comment.gameId)
-      if (gameIndex >= 0) {
-        if (!games[gameIndex].comments) {
-          games[gameIndex].comments = []
-        }
-        games[gameIndex].comments.push(newComment)
-      }
+      // const gameIndex = games.value.findIndex((g) => g.id === comment.gameId)
+      // if (gameIndex >= 0) {
+      //   if (!games[gameIndex].comments) {
+      //     games[gameIndex].comments = []
+      //   }
+      //   games[gameIndex].comments.push(newComment)
+      // }
 
       return newComment
     } catch (error) {
