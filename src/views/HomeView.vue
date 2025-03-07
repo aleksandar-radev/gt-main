@@ -1,144 +1,98 @@
 <script setup lang="ts">
-interface Game {
-  id: number
-  title: string
-  description: string
-  imageUrl: string
-}
+import { onMounted } from 'vue'
+import { useGameStore } from '@/stores/gameStore'
 
-const games: Game[] = [
-  {
-    id: 1,
-    title: 'Game 1',
-    description: 'An exciting adventure game with stunning graphics',
-    imageUrl: 'https://placehold.co/300x200',
-  },
-  // Add more games as needed
-]
+const gameStore = useGameStore()
+
+// Fetch games when component is mounted
+onMounted(() => {
+  if (gameStore.games.length === 0) {
+    gameStore.fetchGames()
+  }
+})
 </script>
 
 <template>
-  <div class="website-container">
-    <!-- Navigation Header -->
-    <nav class="header">
-      <div class="logo">
-        <img src="https://placehold.co/150x50" alt="Company Logo" />
-      </div>
-      <div class="nav-links">
-        <a href="#" class="nav-link">Home</a>
-        <a href="#" class="nav-link">Games</a>
-        <a href="#" class="nav-link">About</a>
-      </div>
-      <div class="auth-section">
-        <button class="settings-btn">⚙️</button>
-        <a href="#" class="auth-link">Login</a>
-        <a href="#" class="auth-link">Register</a>
-      </div>
-    </nav>
+  <div class="home-view">
+    <h1>Games</h1>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <h1>Featured Games</h1>
-      <div class="games-grid">
-        <div v-for="game in games" :key="game.id" class="game-card">
-          <img :src="game.imageUrl" :alt="game.title" class="game-image" />
+    <!-- Loading state -->
+    <div v-if="gameStore.loading" class="loading-state">Loading games...</div>
+
+    <!-- Error state -->
+    <div v-else-if="gameStore.error" class="error-message">
+      {{ gameStore.error }}
+    </div>
+
+    <!-- Games grid -->
+    <div v-else class="games-grid">
+      <div v-for="game in gameStore.games" :key="game.id" class="game-card">
+        <img
+          :src="game.imageUrl || 'https://placehold.co/300x200'"
+          :alt="game.title"
+          class="game-image"
+        />
+        <div class="game-details">
           <h3>{{ game.title }}</h3>
           <p>{{ game.description }}</p>
-        </div>
-      </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h4>About Us</h4>
-          <p>Your gaming platform description</p>
-        </div>
-        <div class="footer-section">
-          <h4>Contact</h4>
-          <p>Email: contact@example.com</p>
-        </div>
-        <div class="footer-section">
-          <h4>Follow Us</h4>
-          <div class="social-links">
-            <a href="#">Twitter</a>
-            <a href="#">Facebook</a>
-            <a href="#">Instagram</a>
+          <div class="game-meta">
+            <span class="game-category">{{ game.category }}</span>
+            <span class="game-rating">Rating: {{ game.rating }}/5</span>
           </div>
+          <router-link :to="`/game/${game.id}`" class="play-button"> Play Now </router-link>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p>&copy; 2024 Gaming Platform. All rights reserved.</p>
+
+      <!-- No games message -->
+      <div v-if="gameStore.games.length === 0 && !gameStore.loading" class="no-games">
+        No games available at the moment.
       </div>
-    </footer>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.website-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+.home-view {
+  width: 100%;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: #1a1a1a;
-  color: white;
+h1 {
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #333;
 }
 
-.nav-links {
-  display: flex;
-  gap: 2rem;
-}
-
-.nav-link,
-.auth-link {
-  color: white;
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-}
-
-.auth-section {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.settings-btn {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: white;
-}
-
-.main-content {
-  flex: 1;
+.loading-state,
+.error-message,
+.no-games {
+  text-align: center;
   padding: 2rem;
+  font-size: 1.2rem;
+}
+
+.error-message {
+  color: #e74c3c;
 }
 
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
-  padding: 2rem 0;
 }
 
 .game-card {
-  background: white;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+  background-color: #fff;
 }
 
 .game-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 .game-image {
@@ -147,42 +101,50 @@ const games: Game[] = [
   object-fit: cover;
 }
 
-.game-card h3 {
-  padding: 1rem;
-  margin: 0;
+.game-details {
+  padding: 1.5rem;
 }
 
-.game-card p {
-  padding: 0 1rem 1rem;
+.game-details h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  color: #333;
+}
+
+.game-details p {
+  margin-bottom: 1rem;
   color: #666;
+  font-size: 0.9rem;
 }
 
-.footer {
-  background-color: #1a1a1a;
-  color: white;
-  padding: 2rem;
-}
-
-.footer-content {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-.social-links {
+.game-meta {
   display: flex;
-  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: #777;
 }
 
-.social-links a {
+.play-button {
+  display: block;
+  background-color: #3498db;
   color: white;
+  text-align: center;
+  padding: 0.75rem;
+  border-radius: 4px;
   text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.2s;
 }
 
-.footer-bottom {
-  text-align: center;
-  padding-top: 2rem;
-  border-top: 1px solid #333;
+.play-button:hover {
+  background-color: #2980b9;
+}
+
+@media (max-width: 768px) {
+  .games-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
 }
 </style>
