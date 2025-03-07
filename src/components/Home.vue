@@ -6,31 +6,31 @@
 </template>
 
 <script lang="ts">
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import authService from '../services/auth.service';
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import authService from '../services/authService'
 
 export default {
     name: 'HomeScreen',
     setup() {
-        const user = ref(null);
-        const router = useRouter();
+        const user = ref(null)
+        const router = useRouter()
 
         onMounted(() => {
-            user.value = authService.getCurrentUser();
-        });
+            user.value = authService.getCurrentUser()
+        })
 
         const logout = () => {
-            authService.logout();
-            router.push('/login');
-        };
+            authService.logout()
+            router.push('/login')
+        }
 
         return {
             user,
             logout,
-        };
+        }
     },
-};
+}
 </script>
 
 <style scoped>

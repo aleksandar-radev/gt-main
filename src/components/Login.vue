@@ -22,32 +22,32 @@
     </div>
 </template>
 
-<script>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import authService from '../services/auth.service';
+<script lang="ts">
+import authService from '@/services/authService'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default {
     name: 'Login',
     setup() {
-        const email = ref('');
-        const password = ref('');
-        const loading = ref(false);
-        const error = ref('');
-        const router = useRouter();
+        const email = ref('')
+        const password = ref('')
+        const loading = ref(false)
+        const error = ref('')
+        const router = useRouter()
 
         const login = async () => {
             try {
-                loading.value = true;
-                error.value = '';
-                await authService.login(email.value, password.value);
-                router.push('/');
-            } catch (err) {
-                error.value = err.response?.data?.message || 'Failed to login';
+                loading.value = true
+                error.value = ''
+                await authService.login(email.value, password.value)
+                router.push('/')
+            } catch (err: any) {
+                error.value = err.response?.data?.message || 'Failed to login'
             } finally {
-                loading.value = false;
+                loading.value = false
             }
-        };
+        }
 
         return {
             email,
@@ -55,9 +55,9 @@ export default {
             loading,
             error,
             login,
-        };
+        }
     },
-};
+}
 </script>
 
 <style scoped>

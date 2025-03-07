@@ -3,9 +3,9 @@ import MainLayout from '@/components/MainLayout.vue'
 import AboutView from '@/views/AboutView.vue'
 import GameList from '@/components/GameList.vue'
 import GameDetail from '@/components/GameDetail.vue'
-import Login from '../components/Login.vue'
-import Register from '../components/Register.vue'
-import authService from '../services/auth.service'
+import authService from '../services/authService'
+import Login from '@/components/Login.vue'
+import Register from '@/components/Register.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
