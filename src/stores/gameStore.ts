@@ -199,12 +199,45 @@ export const useGameStore = defineStore('game', () => {
     return now.toISOString()
   }
 
+  // Add this method to your gameStore
+  function addComment(comment: Partial<Comment>) {
+    try {
+      // Here you would typically make an API call to save the comment
+      // For example:
+      // const response = await api.post('/comments', comment)
+
+      // For now, let's simulate a successful API call
+      const newComment: Comment = {
+        id: Date.now(), // Generate a temporary ID
+        gameId: comment.gameId!,
+        username: comment.username!,
+        text: comment.text!,
+        timestamp: comment.timestamp!,
+      }
+
+      // Add the comment to the game
+      const gameIndex = games.value.findIndex((g) => g.id === comment.gameId)
+      if (gameIndex >= 0) {
+        if (!games[gameIndex].comments) {
+          games[gameIndex].comments = []
+        }
+        games[gameIndex].comments.push(newComment)
+      }
+
+      return newComment
+    } catch (error) {
+      console.error('Failed to add comment:', error)
+      throw error
+    }
+  }
+
   return {
     games,
     loading,
     error,
     commentsLoading,
     commentsError,
+    addComment,
     fetchGames,
     fetchComments,
     getGameById,

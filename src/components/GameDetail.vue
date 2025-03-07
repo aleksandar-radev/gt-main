@@ -10,12 +10,41 @@ const gameStore = useGameStore()
 const gameId = computed(() => Number(route.params.id))
 const game = computed(() => gameStore.games.find((g) => g.id === gameId.value))
 const commentsLoaded = ref(false)
+const newCommentText = ref('')
+const isSubmitting = ref(false)
 
 // Load comments for this game
 const loadComments = async () => {
   if (!commentsLoaded.value && game.value) {
     await gameStore.fetchComments(game.value.id)
     commentsLoaded.value = true
+  }
+}
+
+// Submit new comment
+const submitComment = async () => {
+  if (!game.value || !newCommentText.value.trim()) return
+
+  isSubmitting.value = true
+
+  try {
+    // Create a new comment object
+    const comment = {
+      gameId: game.value.id,
+      username: 'User', // Default username or get from user profile/session
+      text: newCommentText.value,
+      timestamp: new Date().toISOString(),
+    }
+
+    // Add the comment to the store
+    await gameStore.addComment(comment)
+
+    // Reset the form
+    newCommentText.value = ''
+  } catch (error) {
+    console.error('Failed to submit comment:', error)
+  } finally {
+    isSubmitting.value = false
   }
 }
 
@@ -33,6 +62,14 @@ const formatDate = (dateString: string): string => {
 // Navigate back to game list
 const goBack = () => {
   router.push({ name: 'home' })
+}
+
+// Play game function
+const playGame = () => {
+  if (game.value) {
+    const gameUrl = `${import.meta.env.VITE_GAME_URL}/${game.value.name}`
+    window.open(gameUrl, '_blank')
+  }
 }
 
 onMounted(() => {
@@ -73,6 +110,10 @@ onMounted(() => {
         <img :src="game.imageUrl" :alt="game.title" class="game-image" />
         <h1>{{ game.title }}</h1>
         <p class="game-description">{{ game.description }}</p>
+
+        <!-- Play Now button -->
+        <button @click="playGame" class="play-button">Play Now</button>
+
         <div class="game-meta">
           <span class="game-id">Game ID: {{ game.id }}</span>
         </div>
@@ -103,6 +144,21 @@ onMounted(() => {
             <div class="comment-text">{{ comment.text }}</div>
           </div>
         </div>
+
+        <!-- Comment input positioned at the bottom -->
+        <div class="comment-input">
+          <form @submit.prevent="submitComment" class="comment-form">
+            <textarea
+              v-model="newCommentText"
+              placeholder="Write a comment..."
+              rows="2"
+              required
+            ></textarea>
+            <button type="submit" :disabled="isSubmitting">
+              {{ isSubmitting ? 'Sending...' : 'Post' }}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -126,6 +182,26 @@ onMounted(() => {
 
 .back-button:hover {
   background-color: #e0e0e0;
+}
+
+.play-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 1rem 0;
+  transition: background-color 0.3s;
+  display: block;
+  width: fit-content;
+}
+
+.play-button:hover {
+  background-color: #45a049;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .game-detail {
@@ -167,6 +243,8 @@ onMounted(() => {
   background-color: #f9f9f9;
   max-width: 400px;
   border-left: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
 }
 
 .comments-loading,
@@ -191,8 +269,10 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-height: 500px;
+  max-height: 400px;
   overflow-y: auto;
+  margin-bottom: 1rem;
+  flex-grow: 1;
 }
 
 .comment {
@@ -221,6 +301,54 @@ onMounted(() => {
 .comment-text {
   color: var(--color-text);
   line-height: 1.4;
+}
+
+/* Comment input at the bottom */
+.comment-input {
+  margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  background-color: #f9f9f9;
+  padding-top: 0.5rem;
+}
+
+.comment-form {
+  display: flex;
+  gap: 0.5rem;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.comment-form textarea {
+  flex-grow: 1;
+  border: none;
+  padding: 0.75rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: none;
+  outline: none;
+}
+
+.comment-form button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 60px;
+}
+
+.comment-form button:hover:not(:disabled) {
+  background-color: #2980b9;
+}
+
+.comment-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 /* Loading spinner */

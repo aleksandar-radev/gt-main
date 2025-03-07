@@ -29,11 +29,6 @@ const router = createRouter({
         },
       ],
     },
-    // Redirect any unknown routes to the home page
-    {
-      path: '/:pathMatch(.*)*',
-      redirect: '/',
-    },
   ],
 })
 
