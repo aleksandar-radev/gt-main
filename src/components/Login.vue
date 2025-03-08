@@ -40,8 +40,6 @@
             loading.value = true;
             error.value = '';
             await authStore.login(email.value, password.value);
-            const user2 = await authStore.getCurrentUser();
-            console.log(user2);
 
             router.push('/');
         } catch (err: any) {

@@ -28,7 +28,6 @@
                 </div>
             </div>
         </div>
-        <button @click="asdf">asdf</button>
     </div>
 </template>
 
@@ -36,16 +35,9 @@
     import { onMounted } from 'vue';
     import { useGameStore } from '@/stores/gameStore';
     import { useRouter } from 'vue-router';
-    import { useAuthStore } from '@/stores/authStore';
 
     const gameStore = useGameStore();
     const router = useRouter();
-    const authStore = useAuthStore();
-
-    const asdf = async () => {
-        console.log('asdf');
-        console.log('GameList component mounted', await authStore.getCurrentUser());
-    };
 
     // Ensure games are loaded when component is mounted
     onMounted(() => {

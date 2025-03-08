@@ -10,9 +10,16 @@
                 <router-link to="/about" class="nav-link">About</router-link>
             </div>
             <div class="auth-section">
-                <button class="settings-btn">⚙️</button>
-                <a href="/login" class="auth-link">Login</a>
-                <a href="/register" class="auth-link">Register</a>
+                <!-- Show user info and logout button when logged in -->
+                <template v-if="authStore.user">
+                    <span class="username">Whats up, {{ authStore.user.username }}</span>
+                    <button class="logout-btn" @click="handleLogout">Logout</button>
+                </template>
+                <!-- Show login/register links when logged out -->
+                <template v-else>
+                    <router-link to="/login" class="auth-link">Login</router-link>
+                    <router-link to="/register" class="auth-link">Register</router-link>
+                </template>
             </div>
         </nav>
 
@@ -48,9 +55,32 @@
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+    import { useAuthStore } from '@/stores/authStore';
+    import { useRouter } from 'vue-router';
+    import { onMounted } from 'vue';
+
+    const authStore = useAuthStore();
+    const router = useRouter();
+
+    // Check authentication status when component mounts
+    onMounted(async () => {
+        try {
+            await authStore.getCurrentUser();
+            console.log('Current user:', authStore.user);
+        } catch (error) {
+            console.error('Failed to get current user:', error);
+        }
+    });
+
+    const handleLogout = () => {
+        authStore.logout();
+        router.push('/login');
+    };
+</script>
 
 <style scoped>
+    /* Styles remain unchanged */
     .website-container {
         min-height: 100vh;
         display: flex;
@@ -89,12 +119,23 @@
         gap: 1rem;
     }
 
-    .settings-btn {
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        cursor: pointer;
+    .username {
         color: white;
+        font-weight: bold;
+    }
+
+    .logout-btn {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .logout-btn:hover {
+        background-color: #c0392b;
     }
 
     .main-content {

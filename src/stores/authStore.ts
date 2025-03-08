@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import api from '../config/api';
+import type { User } from '../types';
 
 const API_URL = import.meta.env.VITE_GAME_URL;
 
 export const useAuthStore = defineStore('auth', () => {
-    const user = ref(null);
+    const user = ref<User | null>(null);
     const loading = ref(false);
     const error = ref(null);
 
@@ -40,9 +41,9 @@ export const useAuthStore = defineStore('auth', () => {
         }
     };
 
-    const logout = () => {
+    const logout = async () => {
         user.value = null;
-        localStorage.removeItem('user');
+        await api.post(`${API_URL}/user/logout`);
     };
 
     const register = async (username: string, email: string, password: string) => {
@@ -69,7 +70,7 @@ export const useAuthStore = defineStore('auth', () => {
         try {
             const response = await api.get(`${API_URL}/user/session`);
             // Update user with latest data from server
-            user.value = response.data;
+            user.value = response.data.user;
 
             if (!user.value) {
                 throw new Error('User not found');
@@ -78,7 +79,7 @@ export const useAuthStore = defineStore('auth', () => {
             return response.data;
         } catch (err) {
             console.error('Session validation failed:', err);
-            logout();
+            await logout();
             return null;
         }
     };
