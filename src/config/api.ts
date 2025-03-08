@@ -1,8 +1,13 @@
-export const API_CONFIG = {
-    BASE_URL: import.meta.env.VITE_API_BASE_URL || 'https://api.example.com',
-    ENDPOINTS: {
-        GAMES: '/games',
-        COMMENTS: '/comments',
+import axios from 'axios';
+import Cookies from 'js-cookie';
+
+const api = axios.create({
+    baseURL: import.meta.env.VITE_API_URL,
+    headers: {
+        'Content-Type': 'application/json',
+        Authorization: Cookies.get('token'),
     },
-    TIMEOUT: 10000, // 10 seconds
-};
+    withCredentials: true,
+});
+
+export default api;

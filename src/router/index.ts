@@ -3,7 +3,6 @@ import MainLayout from '@/components/MainLayout.vue';
 import AboutView from '@/views/AboutView.vue';
 import GameList from '@/components/GameList.vue';
 import GameDetail from '@/components/GameDetail.vue';
-import authService from '../services/authService';
 import Login from '@/components/Login.vue';
 import Register from '@/components/Register.vue';
 
@@ -45,27 +44,6 @@ const router = createRouter({
             ],
         },
     ],
-});
-
-// Navigation guard
-router.beforeEach((to, from, next) => {
-    const isLoggedIn = authService.isLoggedIn();
-
-    if (to.matched.some((record) => record.meta.requiresAuth)) {
-        if (!isLoggedIn) {
-            next({ name: 'Login' });
-        } else {
-            next();
-        }
-    } else if (to.matched.some((record) => record.meta.guest)) {
-        if (isLoggedIn) {
-            next({ name: 'Home' });
-        } else {
-            next();
-        }
-    } else {
-        next();
-    }
 });
 
 export default router;

@@ -4,7 +4,7 @@
         <form class="auth-form" @submit.prevent="register">
             <div class="form-group">
                 <label for="name">Name</label>
-                <input id="name" v-model="name" type="text" required />
+                <input id="name" v-model="username" type="text" required />
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
@@ -33,20 +33,21 @@
 <script setup lang="ts">
     import { ref, computed } from 'vue';
     import { useRouter } from 'vue-router';
-    import authService from '../services/authService';
     import AuthForm from './AuthForm.vue';
+    import { useAuthStore } from '@/stores/authStore';
 
-    const name = ref('');
+    const username = ref('');
     const email = ref('');
     const password = ref('');
     const confirmPassword = ref('');
     const loading = ref(false);
     const error = ref('');
     const router = useRouter();
+    const authStore = useAuthStore();
 
     const isFormValid = computed(() => {
         return (
-            name.value.trim() !== '' &&
+            username.value.trim() !== '' &&
             email.value.trim() !== '' &&
             password.value.length >= 6 &&
             password.value === confirmPassword.value
@@ -62,7 +63,7 @@
         try {
             loading.value = true;
             error.value = '';
-            await authService.register(name.value, email.value, password.value);
+            await authStore.register(username.value, email.value, password.value);
             router.push('/login');
         } catch (err: any) {
             error.value = err.response?.data?.message || 'Failed to register';

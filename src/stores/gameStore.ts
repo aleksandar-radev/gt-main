@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { API_CONFIG } from '@/config/api';
 import type { Comment, Game } from '../types';
 
 export const useGameStore = defineStore('game', () => {
@@ -15,10 +14,6 @@ export const useGameStore = defineStore('game', () => {
         try {
             loading.value = true;
             error.value = null;
-
-            // In a real app, you would use this API URL for fetching
-            const apiUrl = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.GAMES}`;
-            console.log(`Fetching games from: ${apiUrl}`);
 
             // For now, we'll simulate a network delay and return mock data
             await new Promise((resolve) => setTimeout(resolve, 800));
@@ -76,14 +71,6 @@ export const useGameStore = defineStore('game', () => {
                     imageUrl: 'https://placehold.co/300x200/green/white?text=Zombie+Survival',
                 },
             ];
-
-            /* In a real implementation, you would use fetch or axios like this:
-      const response = await fetch(apiUrl);
-      if (!response.ok) {
-        throw new Error('Failed to fetch games');
-      }
-      games.value = await response.json();
-      */
         } catch (err) {
             console.error('Error fetching games:', err);
             error.value = 'Failed to load games. Please try again later.';
@@ -104,10 +91,6 @@ export const useGameStore = defineStore('game', () => {
                 throw new Error(`Game with ID ${gameId} not found`);
             }
 
-            // In a real app, you would use this API URL for fetching comments
-            const apiUrl = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.GAMES}/${game.name}/comments`;
-            console.log(`Fetching comments from: ${apiUrl}`);
-
             // For now, we'll simulate a network delay and return mock data
             await new Promise((resolve) => setTimeout(resolve, 600));
 
@@ -123,20 +106,7 @@ export const useGameStore = defineStore('game', () => {
                 timestamp: getRandomTimestamp(),
             }));
 
-            // Update the game with comments
             game.comments = mockComments;
-
-            /* In a real implementation, you would use fetch or axios like this:
-      const response = await fetch(apiUrl);
-      if (!response.ok) {
-        throw new Error('Failed to fetch comments');
-      }
-      const comments = await response.json();
-      const game = games.value.find(g => g.id === gameId);
-      if (game) {
-        game.comments = comments;
-      }
-      */
         } catch (err) {
             console.error(`Error fetching comments for game ${gameId}:`, err);
             commentsError.value[gameId] = 'Failed to load comments. Please try again later.';

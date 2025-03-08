@@ -23,22 +23,26 @@
 </template>
 
 <script setup lang="ts">
-    import authService from '@/services/authService';
     import { ref } from 'vue';
     import { useRouter } from 'vue-router';
     import AuthForm from './AuthForm.vue';
+    import { useAuthStore } from '@/stores/authStore';
 
     const email = ref('');
     const password = ref('');
     const loading = ref(false);
     const error = ref('');
     const router = useRouter();
+    const authStore = useAuthStore();
 
     const login = async () => {
         try {
             loading.value = true;
             error.value = '';
-            await authService.login(email.value, password.value);
+            await authStore.login(email.value, password.value);
+            const user2 = await authStore.getCurrentUser();
+            console.log(user2);
+
             router.push('/');
         } catch (err: any) {
             error.value = err.response?.data?.message || 'Failed to login';
