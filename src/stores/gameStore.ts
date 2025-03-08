@@ -1,45 +1,27 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import { API_CONFIG } from '@/config/api'
-
-export interface Comment {
-    id: number
-    gameId: number
-    username: string
-    text: string
-    timestamp: string
-}
-
-export interface Game {
-    id: number
-    name: string
-    title: string
-    description: string
-    imageUrl: string
-    category: string
-    rating: number
-    comments?: Comment[]
-}
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { API_CONFIG } from '@/config/api';
+import type { Comment, Game } from '../types';
 
 export const useGameStore = defineStore('game', () => {
-    const games = ref<Game[]>([])
-    const loading = ref(false)
-    const error = ref<string | null>(null)
-    const commentsLoading = ref<Record<number, boolean>>({})
-    const commentsError = ref<Record<number, string | null>>({})
+    const games = ref<Game[]>([]);
+    const loading = ref(false);
+    const error = ref<string | null>(null);
+    const commentsLoading = ref<Record<number, boolean>>({});
+    const commentsError = ref<Record<number, string | null>>({});
 
     // Mock API function to simulate fetching games from an API
     const fetchGames = async (): Promise<void> => {
         try {
-            loading.value = true
-            error.value = null
+            loading.value = true;
+            error.value = null;
 
             // In a real app, you would use this API URL for fetching
-            const apiUrl = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.GAMES}`
-            console.log(`Fetching games from: ${apiUrl}`)
+            const apiUrl = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.GAMES}`;
+            console.log(`Fetching games from: ${apiUrl}`);
 
             // For now, we'll simulate a network delay and return mock data
-            await new Promise((resolve) => setTimeout(resolve, 800))
+            await new Promise((resolve) => setTimeout(resolve, 800));
 
             // Mock API response
             games.value = [
@@ -93,7 +75,7 @@ export const useGameStore = defineStore('game', () => {
                         'Survive in a post-apocalyptic world filled with zombies and danger. Scavenge for supplies, build fortifications, and form alliances with other survivors. Every decision matters in this intense survival simulation.',
                     imageUrl: 'https://placehold.co/300x200/green/white?text=Zombie+Survival',
                 },
-            ]
+            ];
 
             /* In a real implementation, you would use fetch or axios like this:
       const response = await fetch(apiUrl);
@@ -103,34 +85,34 @@ export const useGameStore = defineStore('game', () => {
       games.value = await response.json();
       */
         } catch (err) {
-            console.error('Error fetching games:', err)
-            error.value = 'Failed to load games. Please try again later.'
+            console.error('Error fetching games:', err);
+            error.value = 'Failed to load games. Please try again later.';
         } finally {
-            loading.value = false
+            loading.value = false;
         }
-    }
+    };
 
     // Function to fetch comments for a specific game
     const fetchComments = async (gameId: number): Promise<void> => {
         try {
             // Set loading state for this game's comments
-            commentsLoading.value[gameId] = true
-            commentsError.value[gameId] = null
+            commentsLoading.value[gameId] = true;
+            commentsError.value[gameId] = null;
 
-            const game = games.value.find((g) => g.id === gameId)
+            const game = games.value.find((g) => g.id === gameId);
             if (!game) {
-                throw new Error(`Game with ID ${gameId} not found`)
+                throw new Error(`Game with ID ${gameId} not found`);
             }
 
             // In a real app, you would use this API URL for fetching comments
-            const apiUrl = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.GAMES}/${game.name}/comments`
-            console.log(`Fetching comments from: ${apiUrl}`)
+            const apiUrl = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.GAMES}/${game.name}/comments`;
+            console.log(`Fetching comments from: ${apiUrl}`);
 
             // For now, we'll simulate a network delay and return mock data
-            await new Promise((resolve) => setTimeout(resolve, 600))
+            await new Promise((resolve) => setTimeout(resolve, 600));
 
             // Generate random number of comments (1-5)
-            const commentCount = Math.floor(Math.random() * 5) + 1
+            const commentCount = Math.floor(Math.random() * 5) + 1;
 
             // Mock comments data
             const mockComments: Comment[] = Array.from({ length: commentCount }).map((_, index) => ({
@@ -139,10 +121,10 @@ export const useGameStore = defineStore('game', () => {
                 username: `user${Math.floor(Math.random() * 1000)}`,
                 text: getRandomComment(game.title),
                 timestamp: getRandomTimestamp(),
-            }))
+            }));
 
             // Update the game with comments
-            game.comments = mockComments
+            game.comments = mockComments;
 
             /* In a real implementation, you would use fetch or axios like this:
       const response = await fetch(apiUrl);
@@ -156,17 +138,17 @@ export const useGameStore = defineStore('game', () => {
       }
       */
         } catch (err) {
-            console.error(`Error fetching comments for game ${gameId}:`, err)
-            commentsError.value[gameId] = 'Failed to load comments. Please try again later.'
+            console.error(`Error fetching comments for game ${gameId}:`, err);
+            commentsError.value[gameId] = 'Failed to load comments. Please try again later.';
         } finally {
-            commentsLoading.value[gameId] = false
+            commentsLoading.value[gameId] = false;
         }
-    }
+    };
 
     // Function to get game by ID
     const getGameById = (id: number): Game | undefined => {
-        return games.value.find((game) => game.id === id)
-    }
+        return games.value.find((game) => game.id === id);
+    };
 
     // Helper function to generate random comments
     function getRandomComment(gameTitle: string): string {
@@ -181,22 +163,22 @@ export const useGameStore = defineStore('game', () => {
             `Can't wait for the sequel to ${gameTitle}!`,
             `${gameTitle} is too easy, needs more challenging levels.`,
             `The soundtrack in ${gameTitle} is absolutely beautiful.`,
-        ]
-        return comments[Math.floor(Math.random() * comments.length)]
+        ];
+        return comments[Math.floor(Math.random() * comments.length)];
     }
 
     // Helper function to generate random timestamps within the last week
     function getRandomTimestamp(): string {
-        const now = new Date()
-        const daysAgo = Math.floor(Math.random() * 7) // 0-6 days ago
-        const hoursAgo = Math.floor(Math.random() * 24) // 0-23 hours ago
-        const minutesAgo = Math.floor(Math.random() * 60) // 0-59 minutes ago
+        const now = new Date();
+        const daysAgo = Math.floor(Math.random() * 7); // 0-6 days ago
+        const hoursAgo = Math.floor(Math.random() * 24); // 0-23 hours ago
+        const minutesAgo = Math.floor(Math.random() * 60); // 0-59 minutes ago
 
-        now.setDate(now.getDate() - daysAgo)
-        now.setHours(now.getHours() - hoursAgo)
-        now.setMinutes(now.getMinutes() - minutesAgo)
+        now.setDate(now.getDate() - daysAgo);
+        now.setHours(now.getHours() - hoursAgo);
+        now.setMinutes(now.getMinutes() - minutesAgo);
 
-        return now.toISOString()
+        return now.toISOString();
     }
 
     // Add this method to your gameStore
@@ -213,7 +195,7 @@ export const useGameStore = defineStore('game', () => {
                 username: comment.username!,
                 text: comment.text!,
                 timestamp: comment.timestamp!,
-            }
+            };
 
             // Add the comment to the game
             // const gameIndex = games.value.findIndex((g) => g.id === comment.gameId)
@@ -224,10 +206,10 @@ export const useGameStore = defineStore('game', () => {
             //   games[gameIndex].comments.push(newComment)
             // }
 
-            return newComment
+            return newComment;
         } catch (error) {
-            console.error('Failed to add comment:', error)
-            throw error
+            console.error('Failed to add comment:', error);
+            throw error;
         }
     }
 
@@ -241,5 +223,5 @@ export const useGameStore = defineStore('game', () => {
         fetchGames,
         fetchComments,
         getGameById,
-    }
-})
+    };
+});

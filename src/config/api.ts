@@ -5,4 +5,4 @@ export const API_CONFIG = {
         COMMENTS: '/comments',
     },
     TIMEOUT: 10000, // 10 seconds
-}
+};

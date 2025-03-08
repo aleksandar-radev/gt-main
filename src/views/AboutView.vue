@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
     <div class="about-container">
         <h1>About Our Gaming Platform</h1>
@@ -67,70 +65,72 @@
     </div>
 </template>
 
+<script setup lang="ts"></script>
+
 <style scoped>
-.about-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #2c3e50;
-}
-
-.about-content {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-.about-section {
-    background-color: rgb(179, 177, 177);
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-    color: #f7f7f7;
-    margin-top: 0;
-    border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-p {
-    line-height: 1.6;
-    color: var(--color-text);
-}
-
-.features-list {
-    padding-left: 1.5rem;
-}
-
-.features-list li {
-    margin-bottom: 1rem;
-    line-height: 1.4;
-}
-
-a {
-    color: #0e3e5e;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-@media (max-width: 768px) {
     .about-container {
-        padding: 1rem;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #2c3e50;
+    }
+
+    .about-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
     }
 
     .about-section {
-        padding: 1rem;
+        background-color: rgb(179, 177, 177);
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-}
+
+    h2 {
+        color: #f7f7f7;
+        margin-top: 0;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        line-height: 1.6;
+        color: var(--color-text);
+    }
+
+    .features-list {
+        padding-left: 1.5rem;
+    }
+
+    .features-list li {
+        margin-bottom: 1rem;
+        line-height: 1.4;
+    }
+
+    a {
+        color: #0e3e5e;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .about-container {
+            padding: 1rem;
+        }
+
+        .about-section {
+            padding: 1rem;
+        }
+    }
 </style>

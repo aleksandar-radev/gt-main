@@ -11,8 +11,8 @@
             </div>
             <div class="auth-section">
                 <button class="settings-btn">⚙️</button>
-                <a href="#" class="auth-link">Login</a>
-                <a href="#" class="auth-link">Register</a>
+                <a href="/login" class="auth-link">Login</a>
+                <a href="/register" class="auth-link">Register</a>
             </div>
         </nav>
 
@@ -48,106 +48,108 @@
     </div>
 </template>
 
+<script setup lang="ts"></script>
+
 <style scoped>
-.website-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
+    .website-container {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: #1a1a1a;
-    color: white;
-}
-
-.nav-links {
-    display: flex;
-    gap: 2rem;
-}
-
-.nav-link,
-.auth-link {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-}
-
-.nav-link.router-link-active {
-    color: #3498db;
-    font-weight: bold;
-}
-
-.auth-section {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.settings-btn {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: white;
-}
-
-.main-content {
-    flex: 1;
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
-}
-
-.footer {
-    background-color: #1a1a1a;
-    color: white;
-    padding: 2rem;
-    margin-top: auto;
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-bottom: 2rem;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.social-links {
-    display: flex;
-    gap: 1rem;
-}
-
-.social-links a {
-    color: white;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.social-links a:hover {
-    color: #3498db;
-}
-
-.footer-bottom {
-    text-align: center;
-    padding-top: 2rem;
-    border-top: 1px solid #333;
-}
-
-@media (max-width: 768px) {
-    .footer-content {
-        grid-template-columns: 1fr;
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background-color: #1a1a1a;
+        color: white;
     }
 
     .nav-links {
-        display: none;
+        display: flex;
+        gap: 2rem;
     }
-}
+
+    .nav-link,
+    .auth-link {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+    }
+
+    .nav-link.router-link-active {
+        color: #3498db;
+        font-weight: bold;
+    }
+
+    .auth-section {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .settings-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: white;
+    }
+
+    .main-content {
+        flex: 1;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .footer {
+        background-color: #1a1a1a;
+        color: white;
+        padding: 2rem;
+        margin-top: auto;
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        margin-bottom: 2rem;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .social-links a {
+        color: white;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .social-links a:hover {
+        color: #3498db;
+    }
+
+    .footer-bottom {
+        text-align: center;
+        padding-top: 2rem;
+        border-top: 1px solid #333;
+    }
+
+    @media (max-width: 768px) {
+        .footer-content {
+            grid-template-columns: 1fr;
+        }
+
+        .nav-links {
+            display: none;
+        }
+    }
 </style>
