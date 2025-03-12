@@ -1,6 +1,12 @@
 <template>
     <div class="feedback-container">
         <h2>Share Your Feedback</h2>
+        <div v-if="submissionError" class="error-message">
+            {{ submissionError }}
+        </div>
+        <div v-if="successMessage" class="success-message">
+            {{ successMessage }}
+        </div>
         <form class="feedback-form" @submit.prevent="submitFeedback">
             <div class="form-group">
                 <label for="name">Name</label>
@@ -9,7 +15,7 @@
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input id="email" v-model="feedback.email" type="text" placeholder="Your email" />
+                <input id="email" v-model="feedback.email" type="email" placeholder="Your email" />
             </div>
 
             <div class="form-group">
@@ -17,13 +23,21 @@
                 <textarea id="message" v-model="feedback.message" placeholder="Your feedback" rows="5"></textarea>
             </div>
 
-            <button type="submit" class="submit-btn">Submit Feedback</button>
+            <button type="submit" class="submit-btn" :disabled="isSubmitting">
+                {{ isSubmitting ? 'Submitting...' : 'Submit Feedback' }}
+            </button>
         </form>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { reactive } from 'vue';
+    import { reactive, ref } from 'vue';
+    import { useFeedbackStore } from '@/stores/feedbackStore';
+
+    const feedbackStore = useFeedbackStore();
+    const submissionError = ref<string | null>(null);
+    const successMessage = ref<string | null>(null);
+    const isSubmitting = ref(false);
 
     const feedback = reactive({
         name: '',
@@ -31,14 +45,25 @@
         message: '',
     });
 
-    const submitFeedback = () => {
-        console.log('Feedback submitted:', feedback);
-        // Here you would typically send the feedback to your backend
-        // Reset form after submission
-        feedback.name = '';
-        feedback.email = '';
-        feedback.message = '';
-        alert('Thank you for your feedback!');
+    const submitFeedback = async () => {
+        try {
+            isSubmitting.value = true;
+            submissionError.value = null;
+            successMessage.value = null;
+
+            await feedbackStore.submitFeedback(feedback);
+
+            // Reset form after successful submission
+            feedback.name = '';
+            feedback.email = '';
+            feedback.message = '';
+
+            successMessage.value = 'Thank you for your feedback! We appreciate your input.';
+        } catch (error) {
+            submissionError.value = typeof error === 'string' ? error : 'Failed to submit feedback. Please try again.';
+        } finally {
+            isSubmitting.value = false;
+        }
     };
 </script>
 
@@ -94,7 +119,28 @@
         align-self: flex-start;
     }
 
-    .submit-btn:hover {
+    .submit-btn:hover:not(:disabled) {
         background-color: #2980b9;
+    }
+
+    .submit-btn:disabled {
+        background-color: #95a5a6;
+        cursor: not-allowed;
+    }
+
+    .error-message {
+        background-color: #ffdddd;
+        color: #d63031;
+        padding: 0.75rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+
+    .success-message {
+        background-color: #ddffdd;
+        color: #00b894;
+        padding: 0.75rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
     }
 </style>

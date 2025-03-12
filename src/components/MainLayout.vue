@@ -9,6 +9,14 @@
                 <router-link to="/games" class="nav-link">Games</router-link>
                 <router-link to="/about" class="nav-link">About</router-link>
                 <router-link to="/feedback" class="nav-link">Feedback</router-link>
+                <!-- Admin-only link -->
+                <router-link
+                    v-if="authStore.user && authStore.user.role === 'admin'"
+                    to="/admin/feedback"
+                    class="nav-link admin-link"
+                >
+                    Manage Feedback
+                </router-link>
             </div>
             <div class="auth-section">
                 <!-- Show user info and logout button when logged in -->
@@ -193,5 +201,16 @@
         .nav-links {
             display: none;
         }
+    }
+
+    .admin-link {
+        background-color: #e74c3c;
+        border-radius: 4px;
+        padding: 0.3rem 0.7rem;
+        font-weight: bold;
+    }
+
+    .admin-link:hover {
+        background-color: #c0392b;
     }
 </style>

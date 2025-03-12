@@ -27,3 +27,13 @@ export interface User {
     role: string;
     last_active: string;
 }
+
+export interface Feedback {
+    id?: number;
+    name: string;
+    email: string;
+    message: string;
+    status?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}

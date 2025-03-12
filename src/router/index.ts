@@ -7,6 +7,7 @@ import Login from '@/components/Login.vue';
 import Register from '@/components/Register.vue';
 import HomeView from '../views/HomeView.vue';
 import FeedbackView from '../views/FeedbackView.vue';
+import { useAuthStore } from '../stores/authStore';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -53,9 +54,38 @@ const router = createRouter({
                     component: Register,
                     meta: { guest: true },
                 },
+                {
+                    path: '/admin/feedback',
+                    name: 'adminFeedback',
+                    component: () => import('../views/AdminFeedbackView.vue'),
+                    meta: {
+                        requiresAuth: true,
+                        requiresAdmin: true,
+                    },
+                },
             ],
         },
     ],
+});
+
+router.beforeEach((to, from, next) => {
+    const authStore = useAuthStore();
+    const isLoggedIn = !!authStore.user;
+    const isAdmin = isLoggedIn && authStore.user?.role === 'admin';
+
+    // Check if route requires admin role
+    if (to.meta.requiresAdmin && !isAdmin) {
+        next({ name: 'home' }); // Redirect non-admins
+        return;
+    }
+
+    // Check if route requires authentication
+    if (to.meta.requiresAuth && !isLoggedIn) {
+        next({ name: 'login' });
+        return;
+    }
+
+    next();
 });
 
 export default router;
