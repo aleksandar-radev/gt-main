@@ -70,22 +70,15 @@ export const useGameStore = defineStore('game', () => {
         },
 
         // Function to add a comment to a game
-        addComment: async (comment: Partial<Comment>): Promise<Comment> => {
+        // In gameStore.ts
+        addComment: async (comment: { gameId: number; content: string }): Promise<void> => {
             try {
-                const response = await api.post(`${API_URL}/game-comments`, comment);
+                const _response = await api.post(`${API_URL}/game-comments`, comment);
 
-                // If the game is already loaded in our store, update its comments
-                const gameIndex = games.value.findIndex((g) => g.id === comment.gameId);
-                if (gameIndex >= 0) {
-                    if (!games.value[gameIndex].comments) {
-                        games.value[gameIndex].comments = [];
-                    }
-                    games.value[gameIndex].comments?.push(response.data);
-                }
-
-                return response.data;
+                // After successful submission, refresh comments
+                await methods.fetchComments(comment.gameId);
             } catch (err) {
-                console.error('Failed to add comment:', err);
+                console.error('Error adding comment:', err);
                 throw err;
             }
         },

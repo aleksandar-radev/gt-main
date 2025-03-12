@@ -11,7 +11,7 @@
 
         <div class="game-detail">
             <div class="game-info">
-                <img :src="game.imageUrl" :alt="game.title" class="game-image" />
+                <img :src="game.bigLogoUrl" :alt="game.title" class="game-image" />
                 <h1>{{ game.title }}</h1>
                 <p class="game-description">{{ game.description }}</p>
 
@@ -42,10 +42,10 @@
                 <div v-else class="comments-list">
                     <div v-for="comment in game.comments" :key="comment.id" class="comment">
                         <div class="comment-header">
-                            <span class="username">{{ comment.username }}</span>
-                            <span class="timestamp">{{ formatDate(comment.timestamp) }}</span>
+                            <span class="username">{{ comment.user.username }}</span>
+                            <span class="timestamp">{{ formatDate(comment.createdAt) }}</span>
                         </div>
-                        <div class="comment-text">{{ comment.text }}</div>
+                        <div class="comment-text">{{ comment.content }}</div>
                     </div>
                 </div>
 
@@ -98,12 +98,11 @@
         isSubmitting.value = true;
 
         try {
-            // Create a new comment object
+            // Create a new comment object with the correct property names
             const comment = {
                 gameId: game.value.id,
-                username: 'User', // Default username or get from user profile/session
-                text: newCommentText.value,
-                timestamp: new Date().toISOString(),
+                content: newCommentText.value, // Changed from 'text' to 'content'
+                // Only include fields the API expects
             };
 
             // Add the comment to the store
@@ -137,7 +136,7 @@
     // Play game function
     const playGame = () => {
         if (game.value) {
-            const gameUrl = 'http://localhost:3010';
+            const gameUrl = game.value.url;
             window.open(gameUrl, '_blank');
         }
     };
@@ -166,7 +165,7 @@
 
 <style scoped>
     .game-detail-container {
-        padding: 2rem 0;
+        padding: 0rem 0;
     }
 
     .back-button {
@@ -268,7 +267,7 @@
     .comments-list {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.3rem;
         max-height: 400px;
         overflow-y: auto;
         margin-bottom: 1rem;
@@ -276,7 +275,7 @@
     }
 
     .comment {
-        padding: 1rem;
+        padding: 2px 1rem;
         background-color: white;
         border-radius: 4px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);

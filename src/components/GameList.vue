@@ -21,7 +21,7 @@
                 class="game-card"
                 @click="navigateToGameDetail(game.id)"
             >
-                <img :src="game.imageUrl" :alt="game.title" class="game-image" />
+                <img :src="game.logoUrl" :alt="game.title" class="game-image" />
                 <div class="game-content">
                     <h3>{{ game.title }}</h3>
                     <p>{{ game.description }}</p>
@@ -54,6 +54,9 @@
 </script>
 
 <style scoped>
+    h1 {
+        color: rgb(219, 207, 207);
+    }
     .game-list {
         padding: 2rem 0;
     }

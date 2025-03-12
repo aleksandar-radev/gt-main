@@ -1,20 +1,38 @@
-export interface Comment {
-    id: number;
-    gameId: number;
-    username: string;
-    text: string;
-    timestamp: string;
-}
-
 export interface Game {
     id: number;
     name: string;
     title: string;
     description: string;
-    imageUrl: string;
+    logoUrl: string;
+    bigLogoUrl: string;
+    url: string;
     category: string;
     rating: number;
     comments?: Comment[];
+}
+
+export interface Comment {
+    id?: number;
+    gameId: number;
+    user: User;
+    content: string;
+    status?: string;
+    createdAt: string;
+    updatedAt?: string;
+    deletedAt?: string;
+    // Include username for display purposes in the UI
+    username?: string; // This might come from the User relation
+    // If you need reactions in the frontend
+    reactions?: CommentReaction[];
+}
+
+// Optional interface for reaction data if needed
+export interface CommentReaction {
+    id?: number;
+    commentId: number;
+    userId: number;
+    type: string; // like, dislike, etc.
+    createdAt?: string;
 }
 
 export interface User {

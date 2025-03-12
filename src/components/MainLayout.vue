@@ -76,7 +76,7 @@
     onMounted(async () => {
         try {
             await authStore.getCurrentUser();
-            console.log('Current user:', authStore.user);
+            // console.log('Current user:', authStore.user);
         } catch (error) {
             console.error('Failed to get current user:', error);
         }
