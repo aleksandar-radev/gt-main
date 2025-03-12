@@ -1,35 +1,7 @@
 <template>
     <div class="home-view">
-        <h1>Games</h1>
-
-        <!-- Loading state -->
-        <div v-if="gameStore.loading" class="loading-state">Loading games...</div>
-
-        <!-- Error state -->
-        <div v-else-if="gameStore.error" class="error-message">
-            {{ gameStore.error }}
-        </div>
-
-        <!-- Games grid -->
-        <div v-else class="games-grid">
-            <div v-for="game in gameStore.games" :key="game.id" class="game-card">
-                <img :src="game.imageUrl || 'https://placehold.co/300x200'" :alt="game.title" class="game-image" />
-                <div class="game-details">
-                    <h3>{{ game.title }}</h3>
-                    <p>{{ game.description }}</p>
-                    <div class="game-meta">
-                        <span class="game-category">{{ game.category }}</span>
-                        <span class="game-rating">Rating: {{ game.rating }}/5</span>
-                    </div>
-                    <router-link :to="`/game/${game.id}`" class="play-button">Play Now</router-link>
-                </div>
-            </div>
-
-            <!-- No games message -->
-            <div v-if="gameStore.games.length === 0 && !gameStore.loading" class="no-games">
-                No games available at the moment.
-            </div>
-        </div>
+        <h1>Welcome :)</h1>
+        <h3>for any questions, either use the email below, or the feedback form.</h3>
     </div>
 </template>
 
@@ -55,7 +27,13 @@
     h1 {
         margin-bottom: 2rem;
         text-align: center;
-        color: #333;
+        color: #d8d7d7;
+    }
+
+    h3 {
+        margin-bottom: 2rem;
+        text-align: center;
+        color: #d8d7d7;
     }
 
     .loading-state,

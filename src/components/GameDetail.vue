@@ -131,13 +131,13 @@
 
     // Navigate back to game list
     const goBack = () => {
-        router.push({ name: 'home' });
+        router.push({ name: 'games' });
     };
 
     // Play game function
     const playGame = () => {
         if (game.value) {
-            const gameUrl = `${import.meta.env.VITE_GAME_URL}/${game.value.name}`;
+            const gameUrl = 'http://localhost:3010';
             window.open(gameUrl, '_blank');
         }
     };
@@ -148,7 +148,7 @@
             gameStore.fetchGames().then(() => {
                 // If after loading games, the game doesn't exist, go back to list
                 if (!game.value) {
-                    router.push({ name: 'home' });
+                    router.push({ name: 'games' });
                     return;
                 }
                 loadComments();
@@ -156,7 +156,7 @@
         } else {
             // If games are already loaded but requested game doesn't exist
             if (!game.value) {
-                router.push({ name: 'home' });
+                router.push({ name: 'games' });
                 return;
             }
             loadComments();

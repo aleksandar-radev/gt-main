@@ -2,12 +2,13 @@
     <div class="website-container">
         <!-- Navigation Header -->
         <nav class="header">
-            <div class="logo">
+            <router-link to="/" class="logo">
                 <img src="https://placehold.co/150x50" alt="Company Logo" />
-            </div>
+            </router-link>
             <div class="nav-links">
-                <router-link to="/" class="nav-link">Games</router-link>
+                <router-link to="/games" class="nav-link">Games</router-link>
                 <router-link to="/about" class="nav-link">About</router-link>
+                <router-link to="/feedback" class="nav-link">Feedback</router-link>
             </div>
             <div class="auth-section">
                 <!-- Show user info and logout button when logged in -->
