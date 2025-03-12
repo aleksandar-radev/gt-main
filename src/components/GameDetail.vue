@@ -57,11 +57,15 @@
                             placeholder="Write a comment..."
                             rows="2"
                             required
+                            maxlength="300"
                         ></textarea>
-                        <button type="submit" :disabled="isSubmitting">
+                        <button type="submit" :disabled="isSubmitting || newCommentText.length === 0">
                             {{ isSubmitting ? 'Sending...' : 'Post' }}
                         </button>
                     </form>
+                    <div class="character-counter" :class="{ 'limit-near': charactersRemaining <= 20 }">
+                        {{ charactersRemaining }} characters left
+                    </div>
                 </div>
             </div>
         </div>
@@ -82,6 +86,11 @@
     const commentsLoaded = ref(false);
     const newCommentText = ref('');
     const isSubmitting = ref(false);
+    const characterLimit = 200;
+
+    const charactersRemaining = computed(() => {
+        return characterLimit - newCommentText.value.length;
+    });
 
     // Load comments for this game
     const loadComments = async () => {
@@ -404,5 +413,50 @@
             border-left: none;
             border-top: 1px solid #eee;
         }
+    }
+
+    .comment-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .comment-form textarea {
+        width: 100%;
+        border: none;
+        padding: 0.75rem;
+        font-family: inherit;
+        font-size: 0.9rem;
+        resize: none;
+        outline: none;
+    }
+
+    .character-counter {
+        padding: 0 0.75rem;
+        font-size: 0.8rem;
+        color: #7f8c8d;
+        text-align: right;
+    }
+
+    .limit-near {
+        color: #e74c3c;
+        font-weight: bold;
+    }
+
+    .comment-form button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        align-self: flex-end;
+        border-radius: 4px;
+        margin: 0 0.75rem 0.75rem 0;
     }
 </style>
