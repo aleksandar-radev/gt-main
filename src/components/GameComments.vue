@@ -24,9 +24,9 @@
                     >
                         <div class="comment-header">
                             <span class="username">{{ comment.username }}</span>
-                            <span class="timestamp">{{ formatDate(comment.timestamp) }}</span>
+                            <span class="timestamp">{{ formatDate(comment.createdAt) }}</span>
                         </div>
-                        <div class="comment-text">{{ comment.text }}</div>
+                        <div class="comment-text">{{ comment.content }}</div>
                     </div>
                 </div>
             </div>
