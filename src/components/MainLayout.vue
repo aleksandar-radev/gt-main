@@ -17,6 +17,13 @@
                 >
                     Manage Feedback
                 </router-link>
+                <router-link
+                    v-if="authStore.user && authStore.user.role === 'admin'"
+                    to="/admin/games"
+                    class="nav-link admin-link"
+                >
+                    Manage Games
+                </router-link>
             </div>
             <div class="auth-section">
                 <!-- Show user info and logout button when logged in -->

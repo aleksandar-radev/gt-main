@@ -4,9 +4,12 @@ export interface Game {
     title: string;
     description: string;
     logoUrl: string;
+    type: string;
+    status: string;
     bigLogoUrl: string;
     url: string;
     category: string;
+    isFeatured: boolean;
     rating: number;
     comments?: Comment[];
 }

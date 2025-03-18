@@ -20,7 +20,13 @@
 
             <div class="form-group">
                 <label for="message">Message</label>
-                <textarea id="message" v-model="feedback.message" placeholder="Your feedback" rows="5"></textarea>
+                <textarea
+                    id="message"
+                    v-model="feedback.message"
+                    placeholder="Your feedback"
+                    rows="5"
+                    required
+                ></textarea>
             </div>
 
             <button type="submit" class="submit-btn" :disabled="isSubmitting">

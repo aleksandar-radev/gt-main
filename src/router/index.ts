@@ -63,6 +63,15 @@ const router = createRouter({
                         requiresAdmin: true,
                     },
                 },
+                {
+                    path: '/admin/games',
+                    name: 'gameManagement',
+                    component: () => import('../views/GameManagement.vue'),
+                    meta: {
+                        requiresAuth: true,
+                        requiresAdmin: true,
+                    },
+                },
             ],
         },
     ],
