@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import type { Comment, Game } from '../types';
 import api from '../config/api';
 
-const API_URL = import.meta.env.VITE_GAME_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const useGameStore = defineStore('game', () => {
     const games = ref<Game[]>([]);
@@ -20,7 +20,7 @@ export const useGameStore = defineStore('game', () => {
                 loading.value = true;
                 error.value = null;
 
-                const response = await api.get(`${API_URL}/games`);
+                const response = await api.get(`${API_URL}games`);
                 games.value = response.data;
             } catch (err) {
                 console.error('Error fetching games:', err);
@@ -42,7 +42,7 @@ export const useGameStore = defineStore('game', () => {
                     throw new Error(`Game with ID ${gameId} not found`);
                 }
 
-                const response = await api.get(`${API_URL}/game-comments/game/${gameId}`);
+                const response = await api.get(`${API_URL}game-comments/game/${gameId}`);
                 game.comments = response.data;
             } catch (err) {
                 console.error(`Error fetching comments for game ${gameId}:`, err);
@@ -60,7 +60,7 @@ export const useGameStore = defineStore('game', () => {
                 if (cachedGame) return cachedGame;
 
                 // If not, fetch it from the API
-                const response = await api.get(`${API_URL}/games/${id}`);
+                const response = await api.get(`${API_URL}games/${id}`);
                 return response.data;
             } catch (err) {
                 console.error(`Error fetching game with ID ${id}:`, err);
@@ -73,7 +73,7 @@ export const useGameStore = defineStore('game', () => {
         // In gameStore.ts
         addComment: async (comment: { gameId: number; content: string }): Promise<void> => {
             try {
-                const _response = await api.post(`${API_URL}/game-comments`, comment);
+                const _response = await api.post(`${API_URL}game-comments`, comment);
 
                 // After successful submission, refresh comments
                 await methods.fetchComments(comment.gameId);
@@ -86,7 +86,7 @@ export const useGameStore = defineStore('game', () => {
         // Function to update a comment
         updateComment: async (id: number, text: string): Promise<Comment> => {
             try {
-                const response = await api.put(`${API_URL}/game-comments/${id}`, { text });
+                const response = await api.put(`${API_URL}game-comments/${id}`, { text });
                 return response.data;
             } catch (err) {
                 console.error(`Failed to update comment ${id}:`, err);
@@ -97,7 +97,7 @@ export const useGameStore = defineStore('game', () => {
         // Function to delete a comment
         deleteComment: async (id: number): Promise<void> => {
             try {
-                await api.delete(`${API_URL}/game-comments/${id}`);
+                await api.delete(`${API_URL}game-comments/${id}`);
 
                 // Remove the comment from all games in the store
                 for (const game of games.value) {
@@ -114,7 +114,7 @@ export const useGameStore = defineStore('game', () => {
         // Function to add a reaction to a comment
         addReaction: async (commentId: number, type: string): Promise<void> => {
             try {
-                await api.post(`${API_URL}/game-comments/${commentId}/reactions`, { type });
+                await api.post(`${API_URL}game-comments/${commentId}/reactions`, { type });
             } catch (err) {
                 console.error(`Failed to add reaction to comment ${commentId}:`, err);
                 throw err;
@@ -124,7 +124,7 @@ export const useGameStore = defineStore('game', () => {
         // Function to remove a reaction from a comment
         removeReaction: async (commentId: number): Promise<void> => {
             try {
-                await api.delete(`${API_URL}/game-comments/${commentId}/reactions`);
+                await api.delete(`${API_URL}game-comments/${commentId}/reactions`);
             } catch (err) {
                 console.error(`Failed to remove reaction from comment ${commentId}:`, err);
                 throw err;
@@ -134,7 +134,7 @@ export const useGameStore = defineStore('game', () => {
         // Function to fetch featured games
         fetchFeaturedGames: async (): Promise<Game[]> => {
             try {
-                const response = await api.get(`${API_URL}/games/featured`);
+                const response = await api.get(`${API_URL}games/featured`);
                 return response.data;
             } catch (err) {
                 console.error('Error fetching featured games:', err);

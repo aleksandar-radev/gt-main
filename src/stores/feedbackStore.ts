@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import type { Feedback } from '../types';
 import api from '../config/api';
 
-const API_URL = import.meta.env.VITE_GAME_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const useFeedbackStore = defineStore('feedback', () => {
     const feedbacks = ref<Feedback[]>([]);
@@ -18,7 +18,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
                 loading.value = true;
                 error.value = null;
 
-                const response = await api.post(`${API_URL}/feedback`, feedback);
+                const response = await api.post(`${API_URL}feedback`, feedback);
                 return response.data;
             } catch (err: any) {
                 console.error('Error submitting feedback:', err);
@@ -35,7 +35,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
                 loading.value = true;
                 error.value = null;
 
-                const response = await api.get(`${API_URL}/feedback`);
+                const response = await api.get(`${API_URL}feedback`);
                 feedbacks.value = response.data;
             } catch (err: any) {
                 console.error('Error fetching feedback:', err);
@@ -51,7 +51,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
                 loading.value = true;
                 error.value = null;
 
-                const response = await api.get(`${API_URL}/feedback/${id}`);
+                const response = await api.get(`${API_URL}feedback/${id}`);
                 currentFeedback.value = response.data;
             } catch (err: any) {
                 console.error(`Error fetching feedback ${id}:`, err);
@@ -67,7 +67,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
                 loading.value = true;
                 error.value = null;
 
-                await api.post(`${API_URL}/feedback/${id}/status`, { status });
+                await api.post(`${API_URL}feedback/${id}/status`, { status });
 
                 // Update local state
                 if (currentFeedback.value && currentFeedback.value.id === id) {
@@ -94,7 +94,7 @@ export const useFeedbackStore = defineStore('feedback', () => {
                 loading.value = true;
                 error.value = null;
 
-                await api.delete(`${API_URL}/feedback/${id}`);
+                await api.delete(`${API_URL}feedback/${id}`);
 
                 // Remove from local state
                 feedbacks.value = feedbacks.value.filter((f) => f.id !== id);
