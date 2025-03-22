@@ -4,8 +4,6 @@ import api from '../config/api';
 import type { User } from '../types';
 import Cookies from 'js-cookie';
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 export const useAuthStore = defineStore('auth', () => {
     const user = ref<User | null>(null);
     const loading = ref(false);
@@ -18,7 +16,7 @@ export const useAuthStore = defineStore('auth', () => {
             error.value = null;
 
             try {
-                const response = await api.post(`${API_URL}user/login`, {
+                const response = await api.post('user/login', {
                     email,
                     password,
                 });
@@ -49,7 +47,7 @@ export const useAuthStore = defineStore('auth', () => {
 
         logout: async () => {
             try {
-                await api.post(`${API_URL}user/logout`);
+                await api.post('user/logout');
             } catch (err) {
                 console.error('Logout error:', err);
                 // Continue with frontend logout even if API request fails
@@ -65,7 +63,7 @@ export const useAuthStore = defineStore('auth', () => {
             error.value = null;
 
             try {
-                const response = await api.post(`${API_URL}user/register`, {
+                const response = await api.post('user/register', {
                     username,
                     email,
                     password,
@@ -84,7 +82,7 @@ export const useAuthStore = defineStore('auth', () => {
             loading.value = true;
 
             try {
-                const response = await api.get(`${API_URL}user/session`);
+                const response = await api.get('user/session');
                 user.value = response.data.user;
 
                 if (user.value) {
@@ -107,7 +105,7 @@ export const useAuthStore = defineStore('auth', () => {
 
         getUserById: async (userId: number) => {
             try {
-                const response = await api.get(`${API_URL}user/${userId}`);
+                const response = await api.get(`user/${userId}`);
                 return response.data;
             } catch (err) {
                 console.error(`Failed to get user with ID ${userId}:`, err);
@@ -117,7 +115,7 @@ export const useAuthStore = defineStore('auth', () => {
 
         getAllUsers: async () => {
             try {
-                const response = await api.get(`${API_URL}user`);
+                const response = await api.get('user');
                 return response.data;
             } catch (err) {
                 console.error('Failed to get all users:', err);
