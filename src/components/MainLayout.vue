@@ -44,28 +44,21 @@
             <router-view></router-view>
         </main>
 
-        <!-- Footer -->
+        <!-- Footer (Slimmer Version) -->
         <footer class="footer">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About Us</h4>
-                    <p>Your gaming platform description</p>
+            <div class="slim-footer-content">
+                <div class="footer-links">
+                    <a href="#">About</a>
+                    <a href="#">Contact</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
                 </div>
-                <div class="footer-section">
-                    <h4>Contact</h4>
-                    <p>Email: contact@example.com</p>
+                <p class="copyright">© 2024 Gaming Platform. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#">Twitter</a>
+                    <a href="#">Facebook</a>
+                    <a href="#">Instagram</a>
                 </div>
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="#">Twitter</a>
-                        <a href="#">Facebook</a>
-                        <a href="#">Instagram</a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2024 Gaming Platform. All rights reserved.</p>
             </div>
         </footer>
     </div>
@@ -162,21 +155,38 @@
         width: 100%;
     }
 
+    /* New slimmer footer styles */
     .footer {
         background-color: #1a1a1a;
         color: white;
-        padding: 2rem;
+        padding: 1rem 2rem;
         margin-top: auto;
     }
 
-    .footer-content {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 2rem;
-        margin-bottom: 2rem;
+    .slim-footer-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
         max-width: 1200px;
-        margin-left: auto;
-        margin-right: auto;
+        margin: 0 auto;
+    }
+
+    .footer-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .footer-links a {
+        color: #ccc;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+        color: #3498db;
     }
 
     .social-links {
@@ -185,8 +195,9 @@
     }
 
     .social-links a {
-        color: white;
+        color: #ccc;
         text-decoration: none;
+        font-size: 0.9rem;
         transition: color 0.2s;
     }
 
@@ -194,15 +205,17 @@
         color: #3498db;
     }
 
-    .footer-bottom {
-        text-align: center;
-        padding-top: 2rem;
-        border-top: 1px solid #333;
+    .copyright {
+        font-size: 0.8rem;
+        color: #888;
+        margin: 0;
     }
 
     @media (max-width: 768px) {
-        .footer-content {
-            grid-template-columns: 1fr;
+        .footer-links,
+        .social-links {
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .nav-links {
