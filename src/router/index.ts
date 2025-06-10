@@ -90,7 +90,7 @@ router.beforeEach((to, from, next) => {
 
     // Check if route requires authentication
     if (to.meta.requiresAuth && !isLoggedIn) {
-        next({ name: 'login' });
+        next({ name: 'Login' });
         return;
     }
 
