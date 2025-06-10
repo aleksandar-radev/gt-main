@@ -3,7 +3,7 @@
         <!-- Navigation Header -->
         <nav class="header">
             <router-link to="/" class="logo">
-                <img src="https://placehold.co/150x50" alt="Company Logo" />
+                <img width="150px" src="/main-logo-wide-transparent.png" alt="Company Logo" />
             </router-link>
             <div class="nav-links">
                 <router-link to="/games" class="nav-link">Games</router-link>
@@ -48,16 +48,16 @@
         <footer class="footer">
             <div class="slim-footer-content">
                 <div class="footer-links">
-                    <a href="#">About</a>
-                    <a href="#">Contact</a>
-                    <a href="#">Privacy</a>
-                    <a href="#">Terms</a>
+                    <!-- <a href="#">About</a> -->
+                    <!-- <a href="#">Contact</a> -->
+                    <!-- <a href="#">Privacy</a> -->
+                    <!-- <a href="#">Terms</a> -->
                 </div>
-                <p class="copyright">© 2024 Gaming Platform. All rights reserved.</p>
+                <p class="copyright">© 2025 GT Platform. All rights reserved.</p>
                 <div class="social-links">
-                    <a href="#">Twitter</a>
-                    <a href="#">Facebook</a>
-                    <a href="#">Instagram</a>
+                    <!-- <a href="#">Twitter</a> -->
+                    <!-- <a href="#">Facebook</a> -->
+                    <!-- <a href="#">Instagram</a> -->
                 </div>
             </div>
         </footer>

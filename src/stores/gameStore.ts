@@ -18,7 +18,7 @@ export const useGameStore = defineStore('game', () => {
                 loading.value = true;
                 error.value = null;
 
-                const response = await api.get('games');
+                const response = await api.get('/games');
                 games.value = response.data;
             } catch (err) {
                 console.error('Error fetching games:', err);

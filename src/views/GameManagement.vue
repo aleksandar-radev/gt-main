@@ -145,6 +145,8 @@
 
         try {
             // You might need to adjust this endpoint based on your API
+            console.log(API_URL);
+
             const response = await api.get(`${API_URL}/games`);
             games.value = response.data;
         } catch (err: any) {
