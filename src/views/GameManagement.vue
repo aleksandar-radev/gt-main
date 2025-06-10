@@ -73,8 +73,8 @@
                 </div>
 
                 <div class="form-group checkbox">
-                    <input id="isActive" v-model="gameForm.isActive" type="checkbox" />
-                    <label for="isActive">Active</label>
+                    <input id="status" v-model="gameForm.status" type="checkbox" />
+                    <label for="status">Active</label>
                 </div>
 
                 <div class="form-actions">
@@ -141,7 +141,7 @@
         bigLogoUrl: '',
         url: '',
         isFeatured: false,
-        isActive: true,
+        status: 'active',
     });
 
     // Fetch all games created by the current user
@@ -174,7 +174,7 @@
             bigLogoUrl: '',
             url: '',
             isFeatured: false,
-            isActive: true,
+            status: 'active',
         });
         isEditing.value = false;
         currentGameId.value = null;
@@ -186,12 +186,12 @@
             name: game.name,
             title: game.title,
             description: game.description,
-            type: game.category, // Assuming 'category' in your type maps to 'type' in the API
+            type: game.type,
             logoUrl: game.logoUrl,
             bigLogoUrl: game.bigLogoUrl,
             url: game.url,
             isFeatured: game.isFeatured || false,
-            isActive: game.status === 'active',
+            status: game.status,
         });
 
         isEditing.value = true;
@@ -209,7 +209,7 @@
         try {
             const payload = {
                 ...gameForm,
-                status: gameForm.isActive ? 'active' : 'inactive',
+                status: gameForm.status,
             };
 
             if (isEditing.value && currentGameId.value) {

@@ -11,7 +11,6 @@ export interface Game {
     category: string;
     isFeatured: boolean;
     /** Derived from the status field, true when status is 'active' */
-    isActive?: boolean;
     rating: number;
     comments?: Comment[];
 }
