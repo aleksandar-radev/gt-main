@@ -72,6 +72,11 @@
                     <label for="isFeatured">Featured Game</label>
                 </div>
 
+                <div class="form-group checkbox">
+                    <input id="isActive" v-model="gameForm.isActive" type="checkbox" />
+                    <label for="isActive">Active</label>
+                </div>
+
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" @click="resetForm">Cancel</button>
                     <button type="submit" class="btn-primary">{{ isEditing ? 'Update Game' : 'Add Game' }}</button>
@@ -136,6 +141,7 @@
         bigLogoUrl: '',
         url: '',
         isFeatured: false,
+        isActive: true,
     });
 
     // Fetch all games created by the current user
@@ -168,6 +174,7 @@
             bigLogoUrl: '',
             url: '',
             isFeatured: false,
+            isActive: true,
         });
         isEditing.value = false;
         currentGameId.value = null;
@@ -184,6 +191,7 @@
             bigLogoUrl: game.bigLogoUrl,
             url: game.url,
             isFeatured: game.isFeatured || false,
+            isActive: game.status === 'active',
         });
 
         isEditing.value = true;
@@ -199,12 +207,17 @@
         error.value = null;
 
         try {
+            const payload = {
+                ...gameForm,
+                status: gameForm.isActive ? 'active' : 'inactive',
+            };
+
             if (isEditing.value && currentGameId.value) {
                 // Update existing game
-                await api.put(`${API_URL}/games/${currentGameId.value}`, gameForm);
+                await api.put(`${API_URL}/games/${currentGameId.value}`, payload);
             } else {
                 // Create new game
-                await api.post(`${API_URL}/games`, gameForm);
+                await api.post(`${API_URL}/games`, payload);
             }
 
             // Refresh the games list

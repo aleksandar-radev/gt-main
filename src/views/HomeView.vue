@@ -9,7 +9,7 @@
             <h2>Featured Games</h2>
             <div class="games-grid">
                 <div
-                    v-for="game in gameStore.featuredGames"
+                    v-for="game in activeFeaturedGames"
                     :key="game.id"
                     class="game-card"
                     @click="navigateToGameDetail(game.id)"
@@ -26,12 +26,14 @@
 </template>
 
 <script setup lang="ts">
-    import { onMounted } from 'vue';
+    import { onMounted, computed } from 'vue';
     import { useGameStore } from '@/stores/gameStore';
     import { useRouter } from 'vue-router';
 
     const gameStore = useGameStore();
     const router = useRouter();
+
+    const activeFeaturedGames = computed(() => gameStore.featuredGames.filter((g) => g.status === 'active'));
 
     // Fetch games when component is mounted
     onMounted(() => {
