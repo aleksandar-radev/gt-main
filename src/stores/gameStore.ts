@@ -5,6 +5,7 @@ import api from '../config/api';
 
 export const useGameStore = defineStore('game', () => {
     const games = ref<Game[]>([]);
+    const featuredGames = ref<Game[]>([]);
     const loading = ref(false);
     const error = ref<string | null>(null);
     const commentsLoading = ref<Record<number, boolean>>({});
@@ -130,14 +131,19 @@ export const useGameStore = defineStore('game', () => {
         },
 
         // Function to fetch featured games
-        fetchFeaturedGames: async (): Promise<Game[]> => {
+        fetchFeaturedGames: async (): Promise<void> => {
             try {
+                loading.value = true;
+                error.value = null;
+
                 const response = await api.get('games/featured');
-                return response.data;
+                featuredGames.value = response.data;
             } catch (err) {
                 console.error('Error fetching featured games:', err);
                 error.value = 'Failed to load featured games. Please try again later.';
-                return [];
+                featuredGames.value = [];
+            } finally {
+                loading.value = false;
             }
         },
     };
@@ -145,6 +151,7 @@ export const useGameStore = defineStore('game', () => {
     // Return state and methods
     return {
         games,
+        featuredGames,
         loading,
         error,
         commentsLoading,
