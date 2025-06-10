@@ -2,21 +2,47 @@
     <div class="home-view">
         <h1>Welcome :)</h1>
         <h3>for any questions, either use the email below, or the feedback form.</h3>
+
+        <div v-if="gameStore.loading" class="loading-state">Loading games...</div>
+        <div v-else-if="gameStore.error" class="error-message">{{ gameStore.error }}</div>
+        <div v-else>
+            <h2>Featured Games</h2>
+            <div class="games-grid">
+                <div
+                    v-for="game in gameStore.featuredGames"
+                    :key="game.id"
+                    class="game-card"
+                    @click="navigateToGameDetail(game.id)"
+                >
+                    <img :src="game.logoUrl" :alt="game.title" class="game-image" />
+                    <div class="game-details">
+                        <h3>{{ game.title }}</h3>
+                        <p>{{ game.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
     import { onMounted } from 'vue';
     import { useGameStore } from '@/stores/gameStore';
+    import { useRouter } from 'vue-router';
 
     const gameStore = useGameStore();
+    const router = useRouter();
 
     // Fetch games when component is mounted
     onMounted(() => {
-        if (gameStore.games.length === 0) {
-            gameStore.fetchGames();
+        if (gameStore.featuredGames.length === 0) {
+            gameStore.fetchFeaturedGames();
         }
     });
+
+    const navigateToGameDetail = (gameId: number) => {
+        router.push({ name: 'gameDetail', params: { id: gameId.toString() } });
+    };
 </script>
 
 <style scoped>
