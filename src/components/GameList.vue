@@ -15,12 +15,7 @@
 
         <!-- Games grid -->
         <div v-else class="games-grid">
-            <div
-                v-for="game in gameStore.games"
-                :key="game.id"
-                class="game-card"
-                @click="navigateToGameDetail(game.id)"
-            >
+            <div v-for="game in activeGames" :key="game.id" class="game-card" @click="navigateToGameDetail(game.id)">
                 <img :src="game.logoUrl" :alt="game.title" class="game-image" />
                 <div class="game-content">
                     <h3>{{ game.title }}</h3>
@@ -32,12 +27,14 @@
 </template>
 
 <script setup lang="ts">
-    import { onMounted } from 'vue';
+    import { onMounted, computed } from 'vue';
     import { useGameStore } from '@/stores/gameStore';
     import { useRouter } from 'vue-router';
 
     const gameStore = useGameStore();
     const router = useRouter();
+
+    const activeGames = computed(() => gameStore.games.filter((g) => g.status === 'active'));
 
     // Ensure games are loaded when component is mounted
     onMounted(() => {
