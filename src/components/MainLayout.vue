@@ -28,7 +28,7 @@
             <div class="auth-section">
                 <!-- Show user info and logout button when logged in -->
                 <template v-if="authStore.user">
-                    <span class="username">Whats up, {{ authStore.user.username }}</span>
+                    <span class="username">What's up, {{ authStore.user.username }}</span>
                     <button class="logout-btn" @click="handleLogout">Logout</button>
                 </template>
                 <!-- Show login/register links when logged out -->
