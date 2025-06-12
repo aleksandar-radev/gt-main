@@ -57,7 +57,7 @@
                 <div class="social-links">
                     <!-- <a href="#">Twitter</a> -->
                     <!-- <a href="#">Facebook</a> -->
-                    <!-- <a href="#">Instagram</a> -->
+                    <a href="https://discord.gg/pvCxff4s" target="_blank" rel="noopener">Discord</a>
                 </div>
             </div>
         </footer>

@@ -52,13 +52,10 @@
                 <p>Have questions, suggestions, or feedback? We'd love to hear from you!</p>
                 <p>
                     Email:
-                    <a href="mailto:contact@example.com">contact@example.com</a>
-                    <br />
-                    Twitter:
-                    <a href="https://twitter.com/example" target="_blank">@GamingPlatform</a>
+                    <a href="mailto:alexander.radev.96@gmail.com">alexander.radev.96@gmail.com</a>
                     <br />
                     Discord:
-                    <a href="https://discord.gg/example" target="_blank">Join our server</a>
+                    <a href="https://discord.gg/pvCxff4s" target="_blank">Join our server</a>
                 </p>
             </section>
         </div>
