@@ -1,7 +1,6 @@
 <template>
     <div class="home-view">
-        <h1>Welcome :)</h1>
-        <h3>for any questions, either use the email below, or the feedback form.</h3>
+        <h1>Welcome</h1>
 
         <div v-if="gameStore.loading" class="loading-state">Loading games...</div>
         <div v-else-if="gameStore.error" class="error-message">{{ gameStore.error }}</div>
