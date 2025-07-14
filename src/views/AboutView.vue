@@ -55,7 +55,7 @@
                     <a href="mailto:alexander.radev.96@gmail.com">alexander.radev.96@gmail.com</a>
                     <br />
                     Discord:
-                    <a href="https://discord.gg/pvCxff4s" target="_blank">Join our server</a>
+                    <a href="https://discord.gg/8rgwg2zzqc" target="_blank">Join our server</a>
                 </p>
             </section>
         </div>
