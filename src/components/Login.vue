@@ -16,7 +16,9 @@
             </button>
             <p class="auth-redirect">
                 Don't have an account?
-                <router-link to="/register" class="auth-link">Register</router-link>
+                <router-link :to="route.name === 'LoginMiniForm' ? '/register-mini' : '/register'" class="auth-link">
+                    Register
+                </router-link>
             </p>
         </form>
     </AuthForm>
@@ -24,7 +26,7 @@
 
 <script setup lang="ts">
     import { ref } from 'vue';
-    import { useRouter } from 'vue-router';
+    import { useRouter, useRoute } from 'vue-router';
     import AuthForm from './AuthForm.vue';
     import { useAuthStore } from '@/stores/authStore';
 
@@ -33,6 +35,7 @@
     const loading = ref(false);
     const error = ref('');
     const router = useRouter();
+    const route = useRoute();
     const authStore = useAuthStore();
 
     const login = async () => {
@@ -40,7 +43,7 @@
             loading.value = true;
             error.value = '';
             await authStore.login(email.value, password.value);
-
+            window.parent.postMessage({ type: 'cloud-login-success' }, '*');
             router.push('/');
         } catch (err: any) {
             error.value = err.response?.data?.message || 'Failed to login';

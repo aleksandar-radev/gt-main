@@ -8,10 +8,38 @@ import Register from '@/components/Register.vue';
 import HomeView from '../views/HomeView.vue';
 import FeedbackView from '../views/FeedbackView.vue';
 import { useAuthStore } from '../stores/authStore';
+import BlankLayout from '../components/BlankLayout.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
+        // Minimal login route
+        {
+            path: '/login-mini',
+            name: 'LoginMini',
+            component: BlankLayout,
+            children: [
+                {
+                    path: '',
+                    name: 'LoginMiniForm',
+                    component: Login,
+                    meta: { guest: true },
+                },
+            ],
+        },
+        {
+            path: '/register-mini',
+            name: 'RegisterMini',
+            component: BlankLayout,
+            children: [
+                {
+                    path: '',
+                    name: 'RegisterMiniForm',
+                    component: Register,
+                    meta: { guest: true },
+                },
+            ],
+        },
         {
             path: '/',
             component: MainLayout,

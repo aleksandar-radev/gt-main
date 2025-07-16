@@ -24,7 +24,12 @@
             </button>
             <p class="auth-redirect">
                 Already have an account?
-                <router-link to="/login" class="auth-link">Login</router-link>
+                <router-link
+                    :to="route.name === 'LoginMiniForm' || route.name === 'RegisterMiniForm' ? '/login-mini' : '/login'"
+                    class="auth-link"
+                >
+                    Login
+                </router-link>
             </p>
         </form>
     </AuthForm>
@@ -32,7 +37,7 @@
 
 <script setup lang="ts">
     import { ref, computed } from 'vue';
-    import { useRouter } from 'vue-router';
+    import { useRouter, useRoute } from 'vue-router';
     import AuthForm from './AuthForm.vue';
     import { useAuthStore } from '@/stores/authStore';
 
@@ -43,6 +48,7 @@
     const loading = ref(false);
     const error = ref('');
     const router = useRouter();
+    const route = useRoute();
     const authStore = useAuthStore();
 
     const isFormValid = computed(() => {
@@ -64,7 +70,12 @@
             loading.value = true;
             error.value = '';
             await authStore.register(username.value, email.value, password.value);
-            router.push('/login');
+            // Redirect to mini login if on mini register, else normal login
+            if (route.name === 'RegisterMiniForm') {
+                router.push('/login-mini');
+            } else {
+                router.push('/login');
+            }
         } catch (err: any) {
             error.value = err.response?.data?.message || 'Failed to register';
         } finally {
