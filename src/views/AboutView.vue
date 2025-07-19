@@ -15,7 +15,7 @@
             <section class="about-section">
                 <h2>Our Story</h2>
                 <p>
-                    Founded in 2023, our platform started as a small project by a group of passionate gamers who wanted
+                    Founded in 2025, our platform started as a small project by a group of passionate gamers who wanted
                     to create a better way to discover and discuss games. Since then, we've grown into a thriving
                     community with thousands of active users.
                 </p>
