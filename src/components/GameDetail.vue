@@ -54,7 +54,7 @@
                     <form class="comment-form" @submit.prevent="submitComment">
                         <textarea
                             v-model="newCommentText"
-                            placeholder="{{ t('gamedetail.placeholder') }}"
+                            :placeholder="t('gamedetail.placeholder')"
                             rows="2"
                             required
                             maxlength="300"
