@@ -1,6 +1,6 @@
 <template>
     <div class="feedback-container">
-        <h2>Share Your Feedback</h2>
+        <h2>{{ t('feedback.title') }}</h2>
         <div v-if="submissionError" class="error-message">
             {{ submissionError }}
         </div>
@@ -9,28 +9,28 @@
         </div>
         <form class="feedback-form" @submit.prevent="submitFeedback">
             <div class="form-group">
-                <label for="name">Name</label>
-                <input id="name" v-model="feedback.name" type="text" placeholder="Your name" />
+                <label for="name">{{ t('feedback.name') }}</label>
+                <input id="name" v-model="feedback.name" type="text" :placeholder="t('feedback.name')" />
             </div>
 
             <div class="form-group">
-                <label for="email">Email</label>
-                <input id="email" v-model="feedback.email" type="email" placeholder="Your email" />
+                <label for="email">{{ t('feedback.email') }}</label>
+                <input id="email" v-model="feedback.email" type="email" :placeholder="t('feedback.email')" />
             </div>
 
             <div class="form-group">
-                <label for="message">Message</label>
+                <label for="message">{{ t('feedback.message') }}</label>
                 <textarea
                     id="message"
                     v-model="feedback.message"
-                    placeholder="Your feedback"
+                    :placeholder="t('feedback.message')"
                     rows="5"
                     required
                 ></textarea>
             </div>
 
             <button type="submit" class="submit-btn" :disabled="isSubmitting">
-                {{ isSubmitting ? 'Submitting...' : 'Submit Feedback' }}
+                {{ isSubmitting ? t('feedback.submitting') : t('feedback.submit') }}
             </button>
         </form>
     </div>
@@ -39,8 +39,10 @@
 <script setup lang="ts">
     import { reactive, ref } from 'vue';
     import { useFeedbackStore } from '@/stores/feedbackStore';
+    import { useI18n } from '@/plugins/i18n';
 
     const feedbackStore = useFeedbackStore();
+    const { t } = useI18n();
     const submissionError = ref<string | null>(null);
     const successMessage = ref<string | null>(null);
     const isSubmitting = ref(false);
@@ -64,9 +66,9 @@
             feedback.email = '';
             feedback.message = '';
 
-            successMessage.value = 'Thank you for your feedback! We appreciate your input.';
+            successMessage.value = t('feedback.success');
         } catch (error) {
-            submissionError.value = typeof error === 'string' ? error : 'Failed to submit feedback. Please try again.';
+            submissionError.value = typeof error === 'string' ? error : t('feedback.error');
         } finally {
             isSubmitting.value = false;
         }

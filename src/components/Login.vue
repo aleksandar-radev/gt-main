@@ -1,23 +1,23 @@
 <template>
     <AuthForm>
-        <h2 class="auth-title">Login</h2>
+        <h2 class="auth-title">{{ t('login.title') }}</h2>
         <form class="auth-form" @submit.prevent="login">
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">{{ t('login.email') }}</label>
                 <input id="email" v-model="email" type="email" required />
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">{{ t('login.password') }}</label>
                 <input id="password" v-model="password" type="password" required />
             </div>
             <div v-if="error" class="error">{{ error }}</div>
             <button type="submit" :disabled="loading" class="auth-button">
-                {{ loading ? 'Logging in...' : 'Login' }}
+                {{ loading ? t('login.logging') : t('login.title') }}
             </button>
             <p class="auth-redirect">
-                Don't have an account?
+                {{ t('login.redirect') }}
                 <router-link :to="route.name === 'LoginMiniForm' ? '/register-mini' : '/register'" class="auth-link">
-                    Register
+                    {{ t('login.register') }}
                 </router-link>
             </p>
         </form>
@@ -29,6 +29,7 @@
     import { useRouter, useRoute } from 'vue-router';
     import AuthForm from './AuthForm.vue';
     import { useAuthStore } from '@/stores/authStore';
+    import { useI18n } from '@/plugins/i18n';
 
     const email = ref('');
     const password = ref('');
@@ -37,6 +38,7 @@
     const router = useRouter();
     const route = useRoute();
     const authStore = useAuthStore();
+    const { t } = useI18n();
 
     const login = async () => {
         try {

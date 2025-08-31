@@ -1,11 +1,11 @@
 <template>
     <div class="comments-section">
         <button class="comments-toggle" @click="toggleComments">
-            {{ showComments ? 'Hide Comments' : 'Show Comments' }}
+            {{ showComments ? t('gamecomments.hide') : t('gamecomments.show') }}
         </button>
 
         <div v-if="showComments" class="comments-container">
-            <div v-if="gameStore.commentsLoading[gameId]" class="comments-loading">Loading comments...</div>
+            <div v-if="gameStore.commentsLoading[gameId]" class="comments-loading">{{ t('gamecomments.loading') }}</div>
 
             <div v-else-if="gameStore.commentsError[gameId]" class="comments-error">
                 {{ gameStore.commentsError[gameId] }}
@@ -13,7 +13,7 @@
 
             <div v-else>
                 <div v-if="gameStore.games.find((g) => g.id === gameId)?.comments?.length === 0" class="no-comments">
-                    No comments yet. Be the first to comment!
+                    {{ t('gamecomments.noComments') }}
                 </div>
 
                 <div v-else class="comments-list">
@@ -37,6 +37,7 @@
 <script setup lang="ts">
     import { ref } from 'vue';
     import { useGameStore } from '@/stores/gameStore';
+    import { useI18n } from '@/plugins/i18n';
 
     const props = defineProps<{
         gameId: number;
@@ -44,6 +45,7 @@
 
     const gameStore = useGameStore();
     const showComments = ref(false);
+    const { t } = useI18n();
 
     const toggleComments = async () => {
         showComments.value = !showComments.value;

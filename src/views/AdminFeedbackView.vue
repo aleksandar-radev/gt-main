@@ -1,20 +1,20 @@
 <template>
     <div class="admin-feedback-container">
-        <h2>Feedback Management</h2>
+        <h2>{{ t('adminFeedback.header') }}</h2>
 
         <div class="admin-header">
-            <h2>Feedback Management</h2>
+            <h2>{{ t('adminFeedback.header') }}</h2>
             <div class="admin-badge">Admin: {{ authStore.user?.username }}</div>
         </div>
 
-        <div v-if="feedbackStore.loading" class="loading">Loading feedback data...</div>
+        <div v-if="feedbackStore.loading" class="loading">{{ t('adminFeedback.loading') }}</div>
 
         <div v-if="feedbackStore.error" class="error-message">
             {{ feedbackStore.error }}
         </div>
 
         <div v-if="!feedbackStore.loading && feedbackStore.feedbacks.length === 0" class="empty-state">
-            No feedback entries found.
+            {{ t('adminFeedback.empty') }}
         </div>
 
         <div v-if="feedbackStore.feedbacks.length > 0" class="feedback-list">
@@ -33,13 +33,15 @@
 
                 <div class="feedback-actions">
                     <select v-model="item.status" @change="updateStatus(item.id!, item.status!)">
-                        <option value="Pending">Pending</option>
-                        <option value="In-Progress">In Progress</option>
-                        <option value="Resolved">Resolved</option>
-                        <option value="Rejected">Rejected</option>
+                        <option value="Pending">{{ t('adminFeedback.pending') }}</option>
+                        <option value="In-Progress">{{ t('adminFeedback.inProgress') }}</option>
+                        <option value="Resolved">{{ t('adminFeedback.resolved') }}</option>
+                        <option value="Rejected">{{ t('adminFeedback.rejected') }}</option>
                     </select>
 
-                    <button class="delete-btn" @click="deleteFeedbackItem(item.id!)">Delete</button>
+                    <button class="delete-btn" @click="deleteFeedbackItem(item.id!)">
+                        {{ t('adminFeedback.delete') }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -50,9 +52,11 @@
     import { onMounted } from 'vue';
     import { useFeedbackStore } from '@/stores/feedbackStore';
     import { useAuthStore } from '@/stores/authStore';
+    import { useI18n } from '@/plugins/i18n';
 
     const feedbackStore = useFeedbackStore();
     const authStore = useAuthStore();
+    const { t } = useI18n();
 
     onMounted(async () => {
         await feedbackStore.getAllFeedback();

@@ -1,55 +1,40 @@
 <template>
     <div class="about-container">
-        <h1>About Our Gaming Platform</h1>
+        <h1>{{ t('about.title') }}</h1>
 
         <div class="about-content">
             <section class="about-section">
-                <h2>Our Mission</h2>
-                <p>
-                    Welcome to our gaming platform! We are dedicated to bringing you the best gaming experience
-                    possible. Our mission is to create a community where gamers can discover new games, connect with
-                    other players, and share their gaming experiences.
-                </p>
+                <h2>{{ t('about.missionTitle') }}</h2>
+                <p>{{ t('about.mission') }}</p>
             </section>
 
             <section class="about-section">
-                <h2>Our Story</h2>
-                <p>
-                    Founded in 2025, our platform started as a small project by a group of passionate gamers who wanted
-                    to create a better way to discover and discuss games. Since then, we've grown into a thriving
-                    community with thousands of active users.
-                </p>
-                <p>
-                    Our team consists of developers, designers, and gaming enthusiasts who work tirelessly to improve
-                    the platform and add new features based on community feedback.
-                </p>
+                <h2>{{ t('about.storyTitle') }}</h2>
+                <p>{{ t('about.story') }}</p>
+                <p>{{ t('about.story2') }}</p>
             </section>
 
             <section class="about-section">
-                <h2>Our Features</h2>
+                <h2>{{ t('about.featuresTitle') }}</h2>
                 <ul class="features-list">
                     <li>
-                        <strong>Game Discovery</strong>
-                        - Find new games that match your interests and preferences.
+                        <strong>{{ t('about.featureDiscovery') }}</strong>
                     </li>
                     <li>
-                        <strong>Community Reviews</strong>
-                        - Read honest reviews from other gamers.
+                        <strong>{{ t('about.featureReviews') }}</strong>
                     </li>
                     <li>
-                        <strong>Discussion</strong>
-                        - Join conversations about your favorite games.
+                        <strong>{{ t('about.featureDiscussion') }}</strong>
                     </li>
                     <li>
-                        <strong>Game Tracking</strong>
-                        - Keep track of games you've played and want to play.
+                        <strong>{{ t('about.featureTracking') }}</strong>
                     </li>
                 </ul>
             </section>
 
             <section class="about-section">
-                <h2>Contact Us</h2>
-                <p>Have questions, suggestions, or feedback? We'd love to hear from you!</p>
+                <h2>{{ t('about.contactTitle') }}</h2>
+                <p>{{ t('about.contact') }}</p>
                 <p>
                     Email:
                     <a href="mailto:alexander.radev.96@gmail.com">alexander.radev.96@gmail.com</a>
@@ -62,7 +47,10 @@
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+    import { useI18n } from '@/plugins/i18n';
+    const { t } = useI18n();
+</script>
 
 <style scoped>
     .about-container {

@@ -6,35 +6,35 @@
                 <img width="150px" src="/main-logo-wide-transparent.png" alt="Company Logo" />
             </router-link>
             <div class="nav-links">
-                <router-link to="/games" class="nav-link">Games</router-link>
-                <router-link to="/about" class="nav-link">About</router-link>
-                <router-link to="/feedback" class="nav-link">Feedback</router-link>
+                <router-link to="/games" class="nav-link">{{ t('main.games') }}</router-link>
+                <router-link to="/about" class="nav-link">{{ t('main.about') }}</router-link>
+                <router-link to="/feedback" class="nav-link">{{ t('main.feedback') }}</router-link>
                 <!-- Admin-only link -->
                 <router-link
                     v-if="authStore.user && authStore.user.role === 'admin'"
                     to="/admin/feedback"
                     class="nav-link admin-link"
                 >
-                    Manage Feedback
+                    {{ t('main.manageFeedback') }}
                 </router-link>
                 <router-link
                     v-if="authStore.user && authStore.user.role === 'admin'"
                     to="/admin/games"
                     class="nav-link admin-link"
                 >
-                    Manage Games
+                    {{ t('main.manageGames') }}
                 </router-link>
             </div>
             <div class="auth-section">
                 <!-- Show user info and logout button when logged in -->
                 <template v-if="authStore.user">
-                    <span class="username">What's up, {{ authStore.user.username }}</span>
-                    <button class="logout-btn" @click="handleLogout">Logout</button>
+                    <span class="username">{{ t('main.whatsUp', { name: authStore.user.username }) }}</span>
+                    <button class="logout-btn" @click="handleLogout">{{ t('main.logout') }}</button>
                 </template>
                 <!-- Show login/register links when logged out -->
                 <template v-else>
-                    <router-link to="/login" class="auth-link">Login</router-link>
-                    <router-link to="/register" class="auth-link">Register</router-link>
+                    <router-link to="/login" class="auth-link">{{ t('main.login') }}</router-link>
+                    <router-link to="/register" class="auth-link">{{ t('main.register') }}</router-link>
                 </template>
             </div>
         </nav>
@@ -53,11 +53,11 @@
                     <!-- <a href="#">Privacy</a> -->
                     <!-- <a href="#">Terms</a> -->
                 </div>
-                <p class="copyright">© 2025 GT Platform. All rights reserved.</p>
+                <p class="copyright">{{ t('main.copyright') }}</p>
                 <div class="social-links">
                     <!-- <a href="#">Twitter</a> -->
                     <!-- <a href="#">Facebook</a> -->
-                    <a href="https://discord.gg/8rgwg2zzqc" target="_blank" rel="noopener">Discord</a>
+                    <a href="https://discord.gg/8rgwg2zzqc" target="_blank" rel="noopener">{{ t('main.discord') }}</a>
                 </div>
             </div>
         </footer>
@@ -68,9 +68,11 @@
     import { useAuthStore } from '@/stores/authStore';
     import { useRouter } from 'vue-router';
     import { onMounted } from 'vue';
+    import { useI18n } from '@/plugins/i18n';
 
     const authStore = useAuthStore();
     const router = useRouter();
+    const { t } = useI18n();
 
     // Check authentication status when component mounts
     onMounted(async () => {

@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import type { Comment, Game } from '../types';
-import api from '../config/api';
+import api from '@/config/api';
+import type { GamePayload } from '../services/gameService';
 
 export const useGameStore = defineStore('game', () => {
     const games = ref<Game[]>([]);
@@ -59,7 +60,7 @@ export const useGameStore = defineStore('game', () => {
                 if (cachedGame) return cachedGame;
 
                 // If not, fetch it from the API
-                const response = await api.get(`games/${id}`);
+                const response = await api.get(`/games/${id}`);
                 return response.data;
             } catch (err) {
                 console.error(`Error fetching game with ID ${id}:`, err);
@@ -72,7 +73,7 @@ export const useGameStore = defineStore('game', () => {
         // In gameStore.ts
         addComment: async (comment: { gameId: number; content: string }): Promise<void> => {
             try {
-                const _response = await api.post('game-comments', comment);
+                await api.post('game-comments', comment);
 
                 // After successful submission, refresh comments
                 await methods.fetchComments(comment.gameId);
@@ -142,6 +143,51 @@ export const useGameStore = defineStore('game', () => {
                 console.error('Error fetching featured games:', err);
                 error.value = 'Failed to load featured games. Please try again later.';
                 featuredGames.value = [];
+            } finally {
+                loading.value = false;
+            }
+        },
+
+        createGame: async (payload: GamePayload): Promise<void> => {
+            try {
+                loading.value = true;
+                error.value = null;
+                await api.post('/games', payload);
+                await methods.fetchGames();
+            } catch (err) {
+                console.error('Error creating game:', err);
+                error.value = 'Failed to save game';
+                throw err;
+            } finally {
+                loading.value = false;
+            }
+        },
+
+        updateGame: async (id: number, payload: GamePayload): Promise<void> => {
+            try {
+                loading.value = true;
+                error.value = null;
+                await api.put(`/games/${id}`, payload);
+                await methods.fetchGames();
+            } catch (err) {
+                console.error('Error updating game:', err);
+                error.value = 'Failed to save game';
+                throw err;
+            } finally {
+                loading.value = false;
+            }
+        },
+
+        deleteGame: async (id: number): Promise<void> => {
+            try {
+                loading.value = true;
+                error.value = null;
+                await api.delete(`/games/${id}`);
+                await methods.fetchGames();
+            } catch (err) {
+                console.error('Error deleting game:', err);
+                error.value = 'Failed to delete game';
+                throw err;
             } finally {
                 loading.value = false;
             }

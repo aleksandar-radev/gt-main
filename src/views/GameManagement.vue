@@ -1,44 +1,44 @@
 <template>
     <div class="game-management">
-        <h1>Game Management</h1>
+        <h1>{{ t('gamemanagement.title') }}</h1>
 
         <!-- Game Form Section -->
         <div class="form-section">
             <div class="section-header">
-                <button class="btn-new-game" @click="resetForm">+ New Game</button>
+                <button class="btn-new-game" @click="resetForm">{{ t('gamemanagement.newGame') }}</button>
             </div>
-            <h2>{{ isEditing ? 'Edit Game' : 'Add New Game' }}</h2>
+            <h2>{{ isEditing ? t('gamemanagement.editHeading') : t('gamemanagement.addHeading') }}</h2>
             <form @submit.prevent="submitGame">
                 <div class="form-group">
-                    <label for="name">Game Name (ID)</label>
+                    <label for="name">{{ t('gamemanagement.name') }}</label>
                     <input
                         id="name"
                         v-model="gameForm.name"
                         type="text"
                         required
-                        placeholder="Unique game identifier"
+                        :placeholder="t('gamemanagement.name')"
                     />
                 </div>
 
                 <div class="form-group">
-                    <label for="title">Game Title</label>
+                    <label for="title">{{ t('gamemanagement.titleField') }}</label>
                     <input id="title" v-model="gameForm.title" type="text" required placeholder="Display title" />
                 </div>
 
                 <div class="form-group">
-                    <label for="description">Description</label>
+                    <label for="description">{{ t('gamemanagement.description') }}</label>
                     <textarea
                         id="description"
                         v-model="gameForm.description"
                         rows="4"
-                        placeholder="Game description"
+                        :placeholder="t('gamemanagement.description')"
                     ></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="type">Game Type</label>
+                    <label for="type">{{ t('gamemanagement.type') }}</label>
                     <select id="type" v-model="gameForm.type" required>
-                        <option value="">Select a type</option>
+                        <option value="">{{ t('gamemanagement.selectType') }}</option>
                         <option value="arcade">Arcade</option>
                         <option value="puzzle">Puzzle</option>
                         <option value="strategy">Strategy</option>
@@ -48,12 +48,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="logoUrl">Logo URL</label>
+                    <label for="logoUrl">{{ t('gamemanagement.logo') }}</label>
                     <input id="logoUrl" v-model="gameForm.logoUrl" type="url" placeholder="URL to game logo" />
                 </div>
 
                 <div class="form-group">
-                    <label for="bigLogoUrl">Big Logo URL</label>
+                    <label for="bigLogoUrl">{{ t('gamemanagement.bigLogo') }}</label>
                     <input
                         id="bigLogoUrl"
                         v-model="gameForm.bigLogoUrl"
@@ -63,44 +63,49 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="url">Game URL</label>
+                    <label for="url">{{ t('gamemanagement.url') }}</label>
                     <input id="url" v-model="gameForm.url" type="url" required placeholder="URL to play the game" />
                 </div>
 
                 <div class="form-group checkbox">
                     <input id="isFeatured" v-model="gameForm.isFeatured" type="checkbox" />
-                    <label for="isFeatured">Featured Game</label>
+                    <label for="isFeatured">{{ t('gamemanagement.featured') }}</label>
                 </div>
 
                 <div class="form-group checkbox">
                     <input id="status" v-model="gameForm.status" type="checkbox" />
-                    <label for="status">Active</label>
+                    <label for="status">{{ t('gamemanagement.active') }}</label>
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn-secondary" @click="resetForm">Cancel</button>
-                    <button type="submit" class="btn-primary">{{ isEditing ? 'Update Game' : 'Add Game' }}</button>
+                    <button type="button" class="btn-secondary" @click="resetForm">
+                        {{ t('gamemanagement.cancel') }}
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        {{ isEditing ? t('gamemanagement.update') : t('gamemanagement.add') }}
+                    </button>
                 </div>
             </form>
         </div>
 
         <!-- Games List Section -->
         <div class="games-list-section">
-            <h2>Your Games</h2>
+            <h2>{{ t('gamemanagement.yourGames') }}</h2>
+            <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
 
             <div v-if="loading" class="loading">
                 <div class="loading-spinner"></div>
-                <p>Loading games...</p>
+                <p>{{ t('gamemanagement.loading') }}</p>
             </div>
 
             <div v-else-if="error" class="error-message">
                 {{ error }}
             </div>
 
-            <div v-else-if="games.length === 0" class="no-games">You haven't added any games yet.</div>
+            <div v-else-if="games.length === 0" class="no-games">{{ t('gamemanagement.noGames') }}</div>
 
             <div v-else class="games-grid">
-                <div v-for="game in games" :key="game.id" class="game-card">
+                <div v-for="game in paginatedGames" :key="game.id" class="game-card">
                     <img :src="game.logoUrl" :alt="game.title" class="game-logo" />
                     <div class="game-info">
                         <h3>{{ game.title }}</h3>
@@ -108,28 +113,45 @@
                         <p class="game-status" :class="game.status">{{ game.status }}</p>
                     </div>
                     <div class="game-actions">
-                        <button class="btn-edit" @click="editGame(game)">Edit</button>
-                        <button class="btn-delete" @click="confirmDelete(game.id)">Delete</button>
+                        <button class="btn-edit" @click="editGame(game)">{{ t('gamemanagement.edit') }}</button>
+                        <button class="btn-delete" @click="confirmDelete(game.id)">
+                            {{ t('gamemanagement.delete') }}
+                        </button>
                     </div>
                 </div>
+            </div>
+            <div v-if="totalPages > 1" class="pagination">
+                <button :disabled="currentPage === 1" @click="prevPage">{{ t('pagination.prev') }}</button>
+                <span>{{ currentPage }} / {{ totalPages }}</span>
+                <button :disabled="currentPage === totalPages" @click="nextPage">{{ t('pagination.next') }}</button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { ref, reactive, onMounted } from 'vue';
-    import api from '@/config/api';
+    import { ref, reactive, onMounted, computed } from 'vue';
     import type { Game } from '@/types';
+    import { useGameStore } from '@/stores/gameStore';
+    import { useI18n } from '@/plugins/i18n';
 
-    const API_URL = import.meta.env.VITE_API_URL;
+    const gameStore = useGameStore();
+    const { t } = useI18n();
 
-    // State
     const games = ref<Game[]>([]);
     const loading = ref(false);
     const error = ref<string | null>(null);
+    const successMessage = ref<string | null>(null);
     const isEditing = ref(false);
     const currentGameId = ref<number | null>(null);
+    const currentPage = ref(1);
+    const gamesPerPage = 6;
+
+    const totalPages = computed(() => Math.ceil(games.value.length / gamesPerPage));
+    const paginatedGames = computed(() => {
+        const start = (currentPage.value - 1) * gamesPerPage;
+        return games.value.slice(start, start + gamesPerPage);
+    });
 
     // Form state
     const gameForm = reactive({
@@ -150,14 +172,12 @@
         error.value = null;
 
         try {
-            // You might need to adjust this endpoint based on your API
-            console.log(API_URL);
-
-            const response = await api.get(`${API_URL}/games`);
-            games.value = response.data;
+            await gameStore.fetchGames();
+            games.value = gameStore.games;
+            currentPage.value = 1;
         } catch (err: any) {
             console.error('Error fetching games:', err);
-            error.value = err.response?.data?.message || 'Failed to load games';
+            error.value = err.response?.data?.message || t('gamemanagement.fetchError');
         } finally {
             loading.value = false;
         }
@@ -213,19 +233,18 @@
             };
 
             if (isEditing.value && currentGameId.value) {
-                // Update existing game
-                await api.put(`${API_URL}/games/${currentGameId.value}`, payload);
+                await gameStore.updateGame(currentGameId.value, payload);
             } else {
-                // Create new game
-                await api.post(`${API_URL}/games`, payload);
+                await gameStore.createGame(payload);
             }
 
-            // Refresh the games list
             await fetchUserGames();
             resetForm();
+            successMessage.value = t('gamemanagement.saveSuccess');
+            setTimeout(() => (successMessage.value = null), 3000);
         } catch (err: any) {
             console.error('Error saving game:', err);
-            error.value = err.response?.data?.message || 'Failed to save game';
+            error.value = err.response?.data?.message || t('gamemanagement.error');
         } finally {
             loading.value = false;
         }
@@ -233,20 +252,30 @@
 
     // Confirm and delete a game
     const confirmDelete = async (gameId: number) => {
-        if (confirm('Are you sure you want to delete this game? This action cannot be undone.')) {
+        if (confirm(t('gamemanagement.deleteConfirm'))) {
             loading.value = true;
             error.value = null;
 
             try {
-                await api.delete(`${API_URL}/games/${gameId}`);
+                await gameStore.deleteGame(gameId);
                 await fetchUserGames();
+                successMessage.value = t('gamemanagement.deleteSuccess');
+                setTimeout(() => (successMessage.value = null), 3000);
             } catch (err: any) {
                 console.error('Error deleting game:', err);
-                error.value = err.response?.data?.message || 'Failed to delete game';
+                error.value = err.response?.data?.message || t('gamemanagement.error');
             } finally {
                 loading.value = false;
             }
         }
+    };
+
+    const nextPage = () => {
+        if (currentPage.value < totalPages.value) currentPage.value += 1;
+    };
+
+    const prevPage = () => {
+        if (currentPage.value > 1) currentPage.value -= 1;
     };
 
     // Load games when component mounts
@@ -375,6 +404,7 @@
         border: 1px solid #eee;
         border-radius: 8px;
         overflow: hidden;
+        cursor: pointer;
         transition:
             transform 0.2s,
             box-shadow 0.2s;
@@ -584,5 +614,40 @@
 
     .btn-new-game:active {
         transform: scale(0.98);
+    }
+
+    .success-message {
+        padding: 1rem;
+        background-color: #e8f8f0;
+        color: #2ecc71;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .pagination button {
+        border: none;
+        background-color: #3498db;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .pagination button[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .pagination button:hover:not([disabled]) {
+        background-color: #2980b9;
     }
 </style>

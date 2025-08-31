@@ -1,13 +1,13 @@
 <template>
     <div v-if="gameStore.loading" class="loading-container">
         <div class="loading-spinner"></div>
-        <p>Loading game details...</p>
+        <p>{{ t('gamedetail.loading') }}</p>
     </div>
 
-    <div v-else-if="!game" class="error-message">Game not found.</div>
+    <div v-else-if="!game" class="error-message">{{ t('gamedetail.notFound') }}</div>
 
     <div v-else class="game-detail-container">
-        <button class="back-button" @click="goBack">← Back to Games</button>
+        <button class="back-button" @click="goBack">{{ t('gamedetail.back') }}</button>
 
         <div class="game-detail">
             <div class="game-info">
@@ -16,7 +16,7 @@
                 <p class="game-description">{{ game.description }}</p>
 
                 <!-- Play Now button -->
-                <button class="play-button" @click="playGame">Play Now</button>
+                <button class="play-button" @click="playGame">{{ t('gamedetail.play') }}</button>
 
                 <div class="game-meta">
                     <span class="game-id">Game ID: {{ game.id }}</span>
@@ -24,11 +24,11 @@
             </div>
 
             <div class="comments-section">
-                <h2>Comments</h2>
+                <h2>{{ t('gamedetail.comments') }}</h2>
 
                 <div v-if="gameStore.commentsLoading[gameId]" class="comments-loading">
                     <div class="loading-spinner small"></div>
-                    <p>Loading comments...</p>
+                    <p>{{ t('gamedetail.loadingComments') }}</p>
                 </div>
 
                 <div v-else-if="gameStore.commentsError[gameId]" class="comments-error">
@@ -36,7 +36,7 @@
                 </div>
 
                 <div v-else-if="!game.comments || game.comments.length === 0" class="no-comments">
-                    No comments yet. Be the first to comment!
+                    {{ t('gamedetail.noComments') }}
                 </div>
 
                 <div v-else class="comments-list">
@@ -54,17 +54,17 @@
                     <form class="comment-form" @submit.prevent="submitComment">
                         <textarea
                             v-model="newCommentText"
-                            placeholder="Write a comment..."
+                            placeholder="{{ t('gamedetail.placeholder') }}"
                             rows="2"
                             required
                             maxlength="300"
                         ></textarea>
                         <button type="submit" :disabled="isSubmitting || newCommentText.length === 0">
-                            {{ isSubmitting ? 'Sending...' : 'Post' }}
+                            {{ isSubmitting ? t('gamedetail.sending') : t('gamedetail.post') }}
                         </button>
                     </form>
                     <div class="character-counter" :class="{ 'limit-near': charactersRemaining <= 20 }">
-                        {{ charactersRemaining }} characters left
+                        {{ t('gamedetail.charactersLeft', { count: charactersRemaining }) }}
                     </div>
                 </div>
             </div>
@@ -76,10 +76,12 @@
     import { ref, computed, onMounted } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
     import { useGameStore } from '@/stores/gameStore';
+    import { useI18n } from '@/plugins/i18n';
 
     const route = useRoute();
     const router = useRouter();
     const gameStore = useGameStore();
+    const { t } = useI18n();
 
     const gameId = computed(() => Number(route.params.id));
     const game = computed(() => gameStore.games.find((g) => g.id === gameId.value));

@@ -1,34 +1,34 @@
 <template>
     <AuthForm>
-        <h2 class="auth-title">Register</h2>
+        <h2 class="auth-title">{{ t('register.title') }}</h2>
         <form class="auth-form" @submit.prevent="register">
             <div class="form-group">
-                <label for="name">Name</label>
+                <label for="name">{{ t('register.name') }}</label>
                 <input id="name" v-model="username" type="text" required />
             </div>
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">{{ t('register.email') }}</label>
                 <input id="email" v-model="email" type="email" required />
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">{{ t('register.password') }}</label>
                 <input id="password" v-model="password" type="password" required />
             </div>
             <div class="form-group">
-                <label for="confirmPassword">Confirm Password</label>
+                <label for="confirmPassword">{{ t('register.confirmPassword') }}</label>
                 <input id="confirmPassword" v-model="confirmPassword" type="password" required />
             </div>
             <div v-if="error" class="error">{{ error }}</div>
             <button type="submit" :disabled="loading || !isFormValid" class="auth-button">
-                {{ loading ? 'Registering...' : 'Register' }}
+                {{ loading ? t('register.registering') : t('register.title') }}
             </button>
             <p class="auth-redirect">
-                Already have an account?
+                {{ t('register.redirect') }}
                 <router-link
                     :to="route.name === 'LoginMiniForm' || route.name === 'RegisterMiniForm' ? '/login-mini' : '/login'"
                     class="auth-link"
                 >
-                    Login
+                    {{ t('register.login') }}
                 </router-link>
             </p>
         </form>
@@ -40,6 +40,7 @@
     import { useRouter, useRoute } from 'vue-router';
     import AuthForm from './AuthForm.vue';
     import { useAuthStore } from '@/stores/authStore';
+    import { useI18n } from '@/plugins/i18n';
 
     const username = ref('');
     const email = ref('');
@@ -50,6 +51,7 @@
     const router = useRouter();
     const route = useRoute();
     const authStore = useAuthStore();
+    const { t } = useI18n();
 
     const isFormValid = computed(() => {
         return (
@@ -62,7 +64,7 @@
 
     const register = async () => {
         if (!isFormValid.value) {
-            error.value = 'Please check your inputs';
+            error.value = t('register.inputError');
             return;
         }
 

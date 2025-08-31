@@ -1,11 +1,11 @@
 <template>
     <div class="home-view">
-        <h1>Welcome</h1>
+        <h1>{{ t('home.welcome') }}</h1>
 
-        <div v-if="gameStore.loading" class="loading-state">Loading games...</div>
+        <div v-if="gameStore.loading" class="loading-state">{{ t('gamelist.loading') }}</div>
         <div v-else-if="gameStore.error" class="error-message">{{ gameStore.error }}</div>
         <div v-else>
-            <h2>Featured Games</h2>
+            <h2>{{ t('home.featured') }}</h2>
             <div class="games-grid">
                 <div
                     v-for="game in activeFeaturedGames"
@@ -28,9 +28,11 @@
     import { onMounted, computed } from 'vue';
     import { useGameStore } from '@/stores/gameStore';
     import { useRouter } from 'vue-router';
+    import { useI18n } from '@/plugins/i18n';
 
     const gameStore = useGameStore();
     const router = useRouter();
+    const { t } = useI18n();
 
     const activeFeaturedGames = computed(() => gameStore.featuredGames.filter((g) => g.status === 'active'));
 
@@ -83,6 +85,7 @@
 
     .game-card {
         border-radius: 8px;
+        cursor: pointer;
         overflow: hidden;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         transition:
