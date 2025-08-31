@@ -36,11 +36,11 @@
                 <h2>{{ t('about.contactTitle') }}</h2>
                 <p>{{ t('about.contact') }}</p>
                 <p>
-                    Email:
+                    {{ t('about.emailLabel') }}:
                     <a href="mailto:alexander.radev.96@gmail.com">alexander.radev.96@gmail.com</a>
                     <br />
-                    Discord:
-                    <a href="https://discord.gg/8rgwg2zzqc" target="_blank">Join our server</a>
+                    {{ t('about.discordLabel') }}:
+                    <a href="https://discord.gg/8rgwg2zzqc" target="_blank">{{ t('about.joinServer') }}</a>
                 </p>
             </section>
         </div>

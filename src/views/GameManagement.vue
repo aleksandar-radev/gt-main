@@ -22,7 +22,13 @@
 
                 <div class="form-group">
                     <label for="title">{{ t('gamemanagement.titleField') }}</label>
-                    <input id="title" v-model="gameForm.title" type="text" required placeholder="Display title" />
+                    <input
+                        id="title"
+                        v-model="gameForm.title"
+                        type="text"
+                        required
+                        :placeholder="t('gamemanagement.titlePlaceholder')"
+                    />
                 </div>
 
                 <div class="form-group">
@@ -39,17 +45,22 @@
                     <label for="type">{{ t('gamemanagement.type') }}</label>
                     <select id="type" v-model="gameForm.type" required>
                         <option value="">{{ t('gamemanagement.selectType') }}</option>
-                        <option value="arcade">Arcade</option>
-                        <option value="puzzle">Puzzle</option>
-                        <option value="strategy">Strategy</option>
-                        <option value="action">Action</option>
-                        <option value="sports">Sports</option>
+                        <option value="arcade">{{ t('gamemanagement.typeOptions.arcade') }}</option>
+                        <option value="puzzle">{{ t('gamemanagement.typeOptions.puzzle') }}</option>
+                        <option value="strategy">{{ t('gamemanagement.typeOptions.strategy') }}</option>
+                        <option value="action">{{ t('gamemanagement.typeOptions.action') }}</option>
+                        <option value="sports">{{ t('gamemanagement.typeOptions.sports') }}</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="logoUrl">{{ t('gamemanagement.logo') }}</label>
-                    <input id="logoUrl" v-model="gameForm.logoUrl" type="url" placeholder="URL to game logo" />
+                    <input
+                        id="logoUrl"
+                        v-model="gameForm.logoUrl"
+                        type="url"
+                        :placeholder="t('gamemanagement.logoPlaceholder')"
+                    />
                 </div>
 
                 <div class="form-group">
@@ -58,13 +69,19 @@
                         id="bigLogoUrl"
                         v-model="gameForm.bigLogoUrl"
                         type="url"
-                        placeholder="URL to game big logo"
+                        :placeholder="t('gamemanagement.bigLogoPlaceholder')"
                     />
                 </div>
 
                 <div class="form-group">
                     <label for="url">{{ t('gamemanagement.url') }}</label>
-                    <input id="url" v-model="gameForm.url" type="url" required placeholder="URL to play the game" />
+                    <input
+                        id="url"
+                        v-model="gameForm.url"
+                        type="url"
+                        required
+                        :placeholder="t('gamemanagement.urlPlaceholder')"
+                    />
                 </div>
 
                 <div class="form-group checkbox">
@@ -109,8 +126,8 @@
                     <img :src="game.logoUrl" :alt="game.title" class="game-logo" />
                     <div class="game-info">
                         <h3>{{ game.title }}</h3>
-                        <p class="game-type">{{ game.type }}</p>
-                        <p class="game-status" :class="game.status">{{ game.status }}</p>
+                        <p class="game-type">{{ t('gamemanagement.typeOptions.' + game.type) }}</p>
+                        <p class="game-status" :class="game.status">{{ t('gamemanagement.status.' + game.status) }}</p>
                     </div>
                     <div class="game-actions">
                         <button class="btn-edit" @click="editGame(game)">{{ t('gamemanagement.edit') }}</button>

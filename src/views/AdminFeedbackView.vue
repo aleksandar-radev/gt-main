@@ -25,7 +25,7 @@
                         <span class="email">{{ item.email }}</span>
                     </h3>
                     <div class="status-badge" :class="item.status?.toLowerCase()">
-                        {{ item.status || 'Pending' }}
+                        {{ t('adminFeedback.' + statusKey(item.status || 'Pending')) }}
                     </div>
                 </div>
 
@@ -71,7 +71,7 @@
     };
 
     const deleteFeedbackItem = async (id: number) => {
-        if (confirm('Are you sure you want to delete this feedback?')) {
+        if (confirm(t('adminFeedback.deleteConfirm'))) {
             try {
                 await feedbackStore.deleteFeedback(id);
             } catch (error) {
@@ -79,6 +79,8 @@
             }
         }
     };
+
+    const statusKey = (status: string) => status.toLowerCase().replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 </script>
 
 <style scoped>

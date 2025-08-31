@@ -19,7 +19,7 @@
                 <button class="play-button" @click="playGame">{{ t('gamedetail.play') }}</button>
 
                 <div class="game-meta">
-                    <span class="game-id">Game ID: {{ game.id }}</span>
+                    <span class="game-id">{{ t('gamedetail.gameId', { id: game.id }) }}</span>
                 </div>
             </div>
 
