@@ -9,6 +9,7 @@ import en from './locales/en.json';
 import es from './locales/es.json';
 import fr from './locales/fr.json';
 import de from './locales/de.json';
+import zh from './locales/zh.json';
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -17,6 +18,6 @@ const savedLocale = localStorage.getItem('locale') || 'en';
 
 app.use(pinia);
 app.use(router);
-app.use(i18nPlugin, { locale: savedLocale, messages: { en, es, fr, de } });
+app.use(i18nPlugin, { locale: savedLocale, messages: { en, es, fr, de, zh } });
 
 app.mount('#app');

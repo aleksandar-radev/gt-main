@@ -139,6 +139,7 @@
         { code: 'es', labelText: 'Español', flag: 'es' },
         { code: 'fr', labelText: 'Français', flag: 'fr' },
         { code: 'de', labelText: 'Deutsch', flag: 'de' },
+        { code: 'zh', labelText: '中文', flag: 'cn' },
     ];
 
     const selectedLang = ref(state.locale);
