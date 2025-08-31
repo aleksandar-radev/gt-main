@@ -28,7 +28,7 @@
             <div class="auth-section">
                 <!-- Show user info and logout button when logged in -->
                 <template v-if="authStore.user">
-                    <span class="username">{{ t('main.whatsUp', { name: authStore.user.username }) }}</span>
+                    <span class="username">{{ t('main.whatsUp', { name: authStore.user?.username ?? '' }) }}</span>
                     <button class="logout-btn" @click="handleLogout">{{ t('main.logout') }}</button>
                 </template>
                 <!-- Show login/register links when logged out -->
@@ -47,16 +47,15 @@
         <!-- Footer (Slimmer Version) -->
         <footer class="footer">
             <div class="slim-footer-content">
-                <div class="footer-links">
-                    <!-- <a href="#">About</a> -->
-                    <!-- <a href="#">Contact</a> -->
-                    <!-- <a href="#">Privacy</a> -->
-                    <!-- <a href="#">Terms</a> -->
+                <div class="language-selector">
+                    <select v-model="selectedLang">
+                        <option v-for="lang in languages" :key="lang.code" :value="lang.code">
+                            {{ lang.label }}
+                        </option>
+                    </select>
                 </div>
                 <p class="copyright">{{ t('main.copyright') }}</p>
                 <div class="social-links">
-                    <!-- <a href="#">Twitter</a> -->
-                    <!-- <a href="#">Facebook</a> -->
                     <a href="https://discord.gg/8rgwg2zzqc" target="_blank" rel="noopener">{{ t('main.discord') }}</a>
                 </div>
             </div>
@@ -67,12 +66,26 @@
 <script setup lang="ts">
     import { useAuthStore } from '@/stores/authStore';
     import { useRouter } from 'vue-router';
-    import { onMounted } from 'vue';
+    import { onMounted, ref, watch } from 'vue';
     import { useI18n } from '@/plugins/i18n';
 
     const authStore = useAuthStore();
     const router = useRouter();
-    const { t } = useI18n();
+    const { t, setLocale, state } = useI18n();
+
+    const languages = [
+        { code: 'en', label: '🇬🇧 English' },
+        { code: 'es', label: '🇪🇸 Español' },
+        { code: 'fr', label: '🇫🇷 Français' },
+        { code: 'de', label: '🇩🇪 Deutsch' },
+    ];
+
+    const selectedLang = ref(state.locale);
+
+    watch(selectedLang, (newLocale) => {
+        setLocale(newLocale);
+        localStorage.setItem('locale', newLocale);
+    });
 
     // Check authentication status when component mounts
     onMounted(async () => {
@@ -175,20 +188,12 @@
         margin: 0 auto;
     }
 
-    .footer-links {
-        display: flex;
-        gap: 1.5rem;
-    }
-
-    .footer-links a {
-        color: #ccc;
-        text-decoration: none;
-        font-size: 0.9rem;
-        transition: color 0.2s;
-    }
-
-    .footer-links a:hover {
-        color: #3498db;
+    .language-selector select {
+        background-color: #1a1a1a;
+        color: #fff;
+        border: 1px solid #444;
+        border-radius: 4px;
+        padding: 0.3rem 0.5rem;
     }
 
     .social-links {
@@ -214,7 +219,7 @@
     }
 
     @media (max-width: 768px) {
-        .footer-links,
+        .language-selector,
         .social-links {
             flex-wrap: wrap;
             justify-content: center;
