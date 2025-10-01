@@ -44,6 +44,12 @@
             <router-view></router-view>
         </main>
 
+        <CookieConsentBanner
+            :visible="showConsentBanner"
+            @accept="handleConsentAccept"
+            @decline="handleConsentDecline"
+        />
+
         <!-- Footer (Slimmer Version) -->
         <footer class="footer">
             <div class="slim-footer-content">
@@ -110,6 +116,7 @@
                 </div>
                 <p class="copyright">{{ t('main.copyright') }}</p>
                 <div class="social-links">
+                    <router-link to="/privacy">{{ t('main.privacy') }}</router-link>
                     <a href="https://discord.gg/8rgwg2zzqc" target="_blank" rel="noopener">{{ t('main.discord') }}</a>
                 </div>
             </div>
@@ -119,12 +126,15 @@
 
 <script setup lang="ts">
     import { useAuthStore } from '@/stores/authStore';
+    import { useConsentStore } from '@/stores/consentStore';
     import { useRouter } from 'vue-router';
     import { onMounted, ref, watch, computed, nextTick } from 'vue';
     import { useI18n } from '@/plugins/i18n';
     import 'flag-icons/css/flag-icons.min.css';
+    import CookieConsentBanner from '@/components/CookieConsentBanner.vue';
 
     const authStore = useAuthStore();
+    const consentStore = useConsentStore();
     const router = useRouter();
     const { t, setLocale, state } = useI18n();
 
@@ -165,6 +175,7 @@
 
     const currentLanguage = computed(() => languages.find((l) => l.code === selectedLang.value));
     const currentLanguageLabel = computed(() => currentLanguage.value?.labelText || selectedLang.value);
+    const showConsentBanner = consentStore.shouldPrompt;
 
     const adjustDropdownDirection = () => {
         if (!langButton.value || !langDropdown.value) return;
@@ -253,6 +264,14 @@
     const handleLogout = () => {
         authStore.logout();
         router.push('/login');
+    };
+
+    const handleConsentAccept = () => {
+        consentStore.accept();
+    };
+
+    const handleConsentDecline = () => {
+        consentStore.decline();
     };
 </script>
 

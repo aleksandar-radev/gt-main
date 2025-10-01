@@ -7,6 +7,7 @@ import Login from '@/components/Login.vue';
 import Register from '@/components/Register.vue';
 import HomeView from '../views/HomeView.vue';
 import FeedbackView from '../views/FeedbackView.vue';
+import PrivacyPolicyView from '@/views/PrivacyPolicyView.vue';
 import { useAuthStore } from '../stores/authStore';
 import BlankLayout from '../components/BlankLayout.vue';
 
@@ -69,6 +70,11 @@ const router = createRouter({
                     path: 'about',
                     name: 'about',
                     component: AboutView,
+                },
+                {
+                    path: 'privacy',
+                    name: 'privacy',
+                    component: PrivacyPolicyView,
                 },
                 {
                     path: '/login',

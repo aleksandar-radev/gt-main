@@ -59,3 +59,9 @@ export interface Feedback {
     createdAt?: Date;
     updatedAt?: Date;
 }
+
+export interface ConsentState {
+    accepted: boolean;
+    version: string;
+    timestamp: string;
+}

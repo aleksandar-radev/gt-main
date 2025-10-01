@@ -10,6 +10,7 @@ import es from './locales/es.json';
 import fr from './locales/fr.json';
 import de from './locales/de.json';
 import zh from './locales/zh.json';
+import { useConsentStore } from './stores/consentStore';
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -17,6 +18,7 @@ const pinia = createPinia();
 const savedLocale = localStorage.getItem('locale') || 'en';
 
 app.use(pinia);
+useConsentStore(pinia);
 app.use(router);
 app.use(i18nPlugin, { locale: savedLocale, messages: { en, es, fr, de, zh } });
 
