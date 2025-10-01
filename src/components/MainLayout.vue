@@ -125,6 +125,7 @@
 </template>
 
 <script setup lang="ts">
+    import { storeToRefs } from 'pinia';
     import { useAuthStore } from '@/stores/authStore';
     import { useConsentStore } from '@/stores/consentStore';
     import { useRouter } from 'vue-router';
@@ -135,6 +136,7 @@
 
     const authStore = useAuthStore();
     const consentStore = useConsentStore();
+    const { shouldPrompt: showConsentBanner } = storeToRefs(consentStore);
     const router = useRouter();
     const { t, setLocale, state } = useI18n();
 
@@ -175,8 +177,6 @@
 
     const currentLanguage = computed(() => languages.find((l) => l.code === selectedLang.value));
     const currentLanguageLabel = computed(() => currentLanguage.value?.labelText || selectedLang.value);
-    const showConsentBanner = consentStore.shouldPrompt;
-
     const adjustDropdownDirection = () => {
         if (!langButton.value || !langDropdown.value) return;
         const btnRect = langButton.value.getBoundingClientRect();
