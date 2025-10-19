@@ -186,7 +186,12 @@
         { value: 'towerdefense', label: 'gamemanagement.typeOptions.towerdefense' },
     ];
 
-    const getTypeLabel = (type: string) => {
+    const getTypeLabel = (type?: string | null) => {
+        if (!type) {
+            const fallbackKey = 'gamemanagement.typeOptions.unknown';
+            return t(fallbackKey);
+        }
+
         const key = `gamemanagement.typeOptions.${type}`;
         const translated = t(key);
         if (translated === key) {
