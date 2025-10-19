@@ -45,11 +45,9 @@
                     <label for="type">{{ t('gamemanagement.type') }}</label>
                     <select id="type" v-model="gameForm.type" required>
                         <option value="">{{ t('gamemanagement.selectType') }}</option>
-                        <option value="arcade">{{ t('gamemanagement.typeOptions.arcade') }}</option>
-                        <option value="puzzle">{{ t('gamemanagement.typeOptions.puzzle') }}</option>
-                        <option value="strategy">{{ t('gamemanagement.typeOptions.strategy') }}</option>
-                        <option value="action">{{ t('gamemanagement.typeOptions.action') }}</option>
-                        <option value="sports">{{ t('gamemanagement.typeOptions.sports') }}</option>
+                        <option v-for="option in typeOptions" :key="option.value" :value="option.value">
+                            {{ t(option.label) }}
+                        </option>
                     </select>
                 </div>
 
@@ -126,7 +124,7 @@
                     <img :src="game.logoUrl" :alt="game.title" class="game-logo" />
                     <div class="game-info">
                         <h3>{{ game.title }}</h3>
-                        <p class="game-type">{{ t('gamemanagement.typeOptions.' + game.type) }}</p>
+                        <p class="game-type">{{ getTypeLabel(game.type) }}</p>
                         <p class="game-status" :class="game.status">{{ t('gamemanagement.status.' + game.status) }}</p>
                     </div>
                     <div class="game-actions">
@@ -163,6 +161,39 @@
     const currentGameId = ref<number | null>(null);
     const currentPage = ref(1);
     const gamesPerPage = 6;
+
+    const typeOptions = [
+        { value: 'arcade', label: 'gamemanagement.typeOptions.arcade' },
+        { value: 'puzzle', label: 'gamemanagement.typeOptions.puzzle' },
+        { value: 'strategy', label: 'gamemanagement.typeOptions.strategy' },
+        { value: 'action', label: 'gamemanagement.typeOptions.action' },
+        { value: 'sports', label: 'gamemanagement.typeOptions.sports' },
+        { value: 'adventure', label: 'gamemanagement.typeOptions.adventure' },
+        { value: 'rpg', label: 'gamemanagement.typeOptions.rpg' },
+        { value: 'shooter', label: 'gamemanagement.typeOptions.shooter' },
+        { value: 'platformer', label: 'gamemanagement.typeOptions.platformer' },
+        { value: 'endlessrunner', label: 'gamemanagement.typeOptions.endlessrunner' },
+        { value: 'roguelike', label: 'gamemanagement.typeOptions.roguelike' },
+        { value: 'metroidvania', label: 'gamemanagement.typeOptions.metroidvania' },
+        { value: 'survival', label: 'gamemanagement.typeOptions.survival' },
+        { value: 'horror', label: 'gamemanagement.typeOptions.horror' },
+        { value: 'simulation', label: 'gamemanagement.typeOptions.simulation' },
+        { value: 'builder', label: 'gamemanagement.typeOptions.builder' },
+        { value: 'racing', label: 'gamemanagement.typeOptions.racing' },
+        { value: 'card', label: 'gamemanagement.typeOptions.card' },
+        { value: 'cooperative', label: 'gamemanagement.typeOptions.cooperative' },
+        { value: 'idle', label: 'gamemanagement.typeOptions.idle' },
+        { value: 'towerdefense', label: 'gamemanagement.typeOptions.towerdefense' },
+    ];
+
+    const getTypeLabel = (type: string) => {
+        const key = `gamemanagement.typeOptions.${type}`;
+        const translated = t(key);
+        if (translated === key) {
+            return type.charAt(0).toUpperCase() + type.slice(1);
+        }
+        return translated;
+    };
 
     const totalPages = computed(() => Math.ceil(games.value.length / gamesPerPage));
     const paginatedGames = computed(() => {
